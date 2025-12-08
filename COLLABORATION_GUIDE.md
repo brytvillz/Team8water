@@ -144,6 +144,7 @@ git push origin update/marketplace-ui
 1. Go to https://github.com/brytvillz/Team8water
 2. You'll see a yellow banner saying "Compare & pull request" - click it
 3. Fill in the PR details:
+
    - **Title**: Brief description (e.g., "Update orders page filtering")
    - **Description**: Explain what you changed and why
    - Example:
@@ -158,6 +159,7 @@ git push origin update/marketplace-ui
      - Tested on Chrome and Safari
      - Checked mobile responsiveness
      ```
+
 4. Click "Create pull request"
 5. Tag team members for review (e.g., @brytvillz)
 
@@ -310,6 +312,150 @@ git push origin your-branch-name
 ├── marketplace/ (Marketplace feature)
 ├── orders/ (Orders feature)
 └── payoutsystem/ (Payment feature)
+```
+
+## Troubleshooting: "I Cloned and Created a Branch But Can't See Files in VS Code!"
+
+### Problem:
+
+You successfully cloned the repository and created a branch, but when you open VS Code, the sidebar shows no files or an empty folder.
+
+### ✅ Solution: Open the Correct Folder in VS Code
+
+**Step 1: Close VS Code**
+
+**Step 2: Open Terminal and Navigate to the Repository**
+
+```bash
+# Navigate to where you cloned the repository
+cd Team8water
+
+# Or if it's somewhere else, find it first:
+cd ~/Desktop/Team8water
+# or
+cd ~/Documents/Team8water
+```
+
+**Step 3: Verify Files Exist in Terminal**
+
+```bash
+# List all files to confirm they're there
+ls -la
+
+# You should see:
+# - index.html
+# - marketplace/
+# - orders/
+# - payoutsystem/
+# etc.
+```
+
+**Step 4: Open VS Code from the Terminal (This is the key!)**
+
+```bash
+# Make sure you're inside the Team8water folder
+pwd    # Should show .../Team8water
+
+# Open VS Code from this folder
+code .
+```
+
+### Alternative Method: Open Folder in VS Code
+
+If `code .` doesn't work:
+
+1. Open VS Code
+2. Click **File** → **Open Folder** (or **File** → **Open** on Mac)
+3. Navigate to and select the **Team8water** folder
+4. Click **Open**
+
+### Common Mistakes:
+
+1. **Opening the parent folder instead of Team8water**
+
+   - ❌ Wrong: Opening `Documents/` or `Desktop/`
+   - ✅ Correct: Opening `Documents/Team8water/` or `Desktop/Team8water/`
+
+2. **Opening VS Code before navigating to the folder**
+
+   - ❌ Wrong: Open VS Code → try to find files
+   - ✅ Correct: Navigate to folder in terminal → then `code .`
+
+3. **Opening a workspace instead of the folder**
+   - Make sure you're opening the actual **folder**, not a workspace file
+
+### Quick Check Commands:
+
+```bash
+# In Terminal, while inside Team8water folder:
+
+# 1. Verify you're in the right place
+pwd
+# Should show: /Users/yourname/.../Team8water
+
+# 2. Check what branch you're on
+git branch
+# Should show your branch with a * next to it
+
+# 3. Verify files exist
+ls -1
+# Should list:
+# COLLABORATION_GUIDE.md
+# index.css
+# index.html
+# marketplace
+# orders
+# payoutsystem
+# script.js
+# etc.
+
+# 4. Open VS Code
+code .
+```
+
+### Still Not Working?
+
+**Try these in order:**
+
+```bash
+# 1. Make sure you pulled the latest changes
+git pull origin main
+
+# 2. Check if files are actually there
+find . -name "*.html" -o -name "*.css" -o -name "*.js"
+
+# 3. If files are there but VS Code doesn't show them, restart VS Code:
+# Close VS Code completely
+# Then reopen with:
+code .
+
+# 4. If still nothing, check VS Code file explorer settings:
+# In VS Code, press Cmd+Shift+P (Mac) or Ctrl+Shift+P (Windows)
+# Type: "File: Reset Explorer State"
+# Press Enter
+```
+
+### Video Guide for Collaborators:
+
+**Opening Folder Correctly:**
+
+```bash
+# 1. Clone (if not done already)
+git clone https://github.com/brytvillz/Team8water.git
+
+# 2. Navigate INTO the folder
+cd Team8water
+
+# 3. Verify files
+ls -la
+
+# 4. Create your branch
+git checkout -b your-branch-name
+
+# 5. Open in VS Code
+code .
+
+# ✅ Now you should see all files in VS Code sidebar!
 ```
 
 ## Communication
