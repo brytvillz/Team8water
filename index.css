@@ -518,7 +518,7 @@ body {
 
 /* FEATURES */
 .features-section {
-  background-color: #cccccc;
+  background-color: #667E06;
   padding: 2.5rem 3.5rem;
   display: flex;
   justify-content: center;
@@ -536,7 +536,7 @@ body {
 
 .feature p {
   font-size: 0.9rem;
-  color: #99a959;
+  color: #FFFFFF;
 }
 
 /* CONTACT */
@@ -692,6 +692,7 @@ footer {
 footer section {
   width: 100%;
   display: flex;
+  align-items: start;
   justify-content: space-between;
   padding: 2rem 0;
 }
@@ -723,11 +724,6 @@ footer h5 {
   font-weight: 600;
 }
 
-.footer-contact,
-.footer-socials,
-footer nav {
-  margin-top: 2rem;
-}
 
 .footer-navbar {
   list-style: none;
