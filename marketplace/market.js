@@ -182,18 +182,25 @@ const cropLocationMap = {
     "soybean": "legumes.html",
     "beans": "legumes.html",
     "yam": "tubers.html",
-    "cassava": "tubers.html",    
+    "cassava": "tubers.html"
 };
-
 
 function filterProducts() {
     const searchInput = document.querySelector('.search-box input[type="text"]');
     if (!searchInput) return;
 
     const searchTerm = searchInput.value.toLowerCase().trim();
-    
+
+    if (searchTerm.length > 0 && searchTerm.length < 1) {
+        document.querySelectorAll('.product-card').forEach(card => card.style.display = 'none');
+        updateNotAvailableMessage(false);
+        return;
+    }
+
+
     const productCards = document.querySelectorAll('.product-card');
     let visibleCrops = 0;
+    let isExactMatchOnCurrentPage = false;
 
     if (searchTerm === '') {
         productCards.forEach(card => card.style.display = '');
@@ -211,32 +218,70 @@ function filterProducts() {
         if (isMatch) {
             card.style.display = '';
             visibleCrops++;
+            if (title === searchTerm) {
+                isExactMatchOnCurrentPage = true;
+            }
         } else {
             card.style.display = 'none';
         }
     });
 
-    updateFilteredCropCount(visibleCrops);
-    updateGlobalSummary();
     updateNotAvailableMessage(false);
+
 
     if (visibleCrops === 0) {
         const foundPage = cropLocationMap[searchTerm];
 
-        if (foundPage && foundPage !== window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1)) {
+        const currentPage = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+
+        if (foundPage && foundPage !== currentPage) {
             updateNotAvailableMessage(true);
 
             setTimeout(() => {
-                window.location.href = `${foundPage}?search=${encodeURIComponent(searchInput.value.trim())}`;
+                window.location.href = `${foundPage}?search=${encodeURIComponent(searchTerm)}`;
             }, 500);
 
-        } else if (!foundPage) {
+        } else if (foundPage && foundPage === currentPage) {
             updateNotAvailableMessage(true);
-            document.getElementById('notAvailableMessage').textContent = 'Crop not available anywhere.';
+            document.getElementById('notAvailableMessage').textContent = `Crop ${searchInput.value.trim()} is expected here, but not found.`;
+        } else {
+            updateNotAvailableMessage(true);
+            document.getElementById('notAvailableMessage').textContent = `Crop "${searchInput.value.trim()}" is not available anywhere.`;
         }
     }
 }
 
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const initialSearchTerm = getUrlParameter('search');
+
+    if (initialSearchTerm) {
+        const searchInput = document.querySelector('.search-box input[type="text"]');
+        if (searchInput) {
+            searchInput.value = initialSearchTerm;
+        }
+
+        filterProducts();
+    }
+});
+
+//To check for live search 
+function initializeLiveSearch() {
+    const searchInput = document.querySelector('.search-box input[type="text"]');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            filterProducts();
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initializeLiveSearch);
 
 //To update the crop count on the webpage
 function updateCropCount() {
