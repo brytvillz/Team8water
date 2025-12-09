@@ -1,7 +1,11 @@
-const hideNav = document.getElementById("hideNav");
+const hideNavLoggedOut = document.getElementById("hideNavLoggedOut");
+const hideNavLoggedIn = document.getElementById("hideNavLoggedIn");
 const showNav = document.getElementById("showNav");
-const mobileNav = document.querySelector(".mobile-nav-links");
-const navLinks = document.querySelectorAll("#mobileNav li");
+const mobileNavLoggedOut = document.getElementById("mobileNavLoggedOut");
+const mobileNavLoggedIn = document.getElementById("mobileNavLoggedIn");
+const navLinksLoggedOut = document.getElementById("navLinksLoggedOut");
+const navLinksLoggedIn = document.getElementById("navLinksLoggedIn");
+const navLinks = document.querySelectorAll(".mobile-nav-links li");
 const navBar = document.querySelector(".container");
 
 const userMenu = document.getElementById("userMenu");
@@ -11,9 +15,8 @@ const loginModal = document.querySelector(".signIn-card");
 const registerModal = document.querySelector(".signUp-card");
 const loginBtn = document.querySelectorAll("#loginBtn");
 const logoutBtn = document.querySelectorAll("#logoutBtn");
-const mobileAuthButtons = document.querySelector(".mobile-auth");
-const mobileLoginBtn = mobileAuthButtons?.querySelector("#loginBtn");
-const mobileLogoutBtn = mobileAuthButtons?.querySelector("#logoutBtn");
+const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 const formClose = document.querySelectorAll("#formClose");
 const switchToRegister = document.getElementById("switchToRegister");
 const switchToLogin = document.getElementById("switchToLogin");
@@ -76,26 +79,47 @@ if (slides.length > 0) {
   startAutoSlide();
 }
 
-// Mobile Navvigation
+// Mobile Navigation
 if (showNav) {
   showNav.addEventListener("click", (e) => {
-    mobileNav.style.display = "block";
-    hideNav.style.display = "block";
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (currentUser) {
+      // Show logged-in nav
+      mobileNavLoggedIn.style.display = "block";
+      mobileNavLoggedOut.style.display = "none";
+    } else {
+      // Show logged-out nav
+      mobileNavLoggedOut.style.display = "block";
+      mobileNavLoggedIn.style.display = "none";
+    }
+
     navBar.style.display = "none";
   });
 }
 
-if (hideNav) {
-  hideNav.addEventListener("click", (e) => {
+if (hideNavLoggedOut) {
+  hideNavLoggedOut.addEventListener("click", (e) => {
+    e.preventDefault();
     showNav.style.display = "block";
-    mobileNav.style.display = "none";
+    mobileNavLoggedOut.style.display = "none";
+    navBar.style.display = "flex";
+  });
+}
+
+if (hideNavLoggedIn) {
+  hideNavLoggedIn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showNav.style.display = "block";
+    mobileNavLoggedIn.style.display = "none";
     navBar.style.display = "flex";
   });
 }
 
 navLinks.forEach((links, index) => {
   links.addEventListener("click", () => {
-    mobileNav.style.display = "none";
+    mobileNavLoggedOut.style.display = "none";
+    mobileNavLoggedIn.style.display = "none";
     navBar.style.display = "flex";
   });
 });
@@ -106,12 +130,11 @@ loginBtn.forEach((login) => {
     modalContainer.style.display = "flex";
     loginModal.style.display = "flex";
     registerModal.style.display = "none";
-    mobileNav.style.display = "none";
+    mobileNavLoggedOut.style.display = "none";
+    mobileNavLoggedIn.style.display = "none";
     navBar.style.display = "flex";
   });
 });
-
-
 
 // Event Listeners for Modals
 
@@ -262,11 +285,15 @@ if (loginFormElement) {
     modalContainer.style.display = "none";
     loginFormElement.reset();
 
-    // Show user menu
+    // Show user menu and update nav links
     loginBtn.forEach((btn) => (btn.style.display = "none"));
     logoutBtn.forEach((btn) => (btn.style.display = "block"));
     userMenu.style.display = "flex";
     mobileUserName.style.display = "flex";
+
+    // Switch desktop nav links
+    navLinksLoggedOut.style.display = "none";
+    navLinksLoggedIn.style.display = "flex";
 
     // Mobile: hide login button, show logout button
     if (mobileLoginBtn) {
@@ -292,6 +319,10 @@ logoutBtn.forEach((logout) => {
     userMenu.style.display = "none";
     mobileUserName.style.display = "none";
 
+    // Switch desktop nav links back to logged out
+    navLinksLoggedOut.style.display = "flex";
+    navLinksLoggedIn.style.display = "none";
+
     // Mobile: show login button, hide logout button
     if (mobileLoginBtn) {
       mobileLoginBtn.style.display = "block";
@@ -315,6 +346,10 @@ window.addEventListener("load", () => {
     userMenu.style.display = "flex";
     mobileUserName.style.display = "flex";
 
+    // Switch desktop nav links to logged in
+    navLinksLoggedOut.style.display = "none";
+    navLinksLoggedIn.style.display = "flex";
+
     // Mobile: hide login button, show logout button
     if (mobileLoginBtn) {
       mobileLoginBtn.style.display = "none";
@@ -335,6 +370,10 @@ window.addEventListener("load", () => {
     logoutBtn.forEach((btn) => (btn.style.display = "none"));
     userMenu.style.display = "none";
     mobileUserName.style.display = "none";
+
+    // Switch desktop nav links to logged out
+    navLinksLoggedOut.style.display = "flex";
+    navLinksLoggedIn.style.display = "none";
 
     // Mobile: show login button, hide logout button
     if (mobileLoginBtn) {

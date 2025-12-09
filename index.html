@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crop8hub - Team 8 water</title>
     <link rel="stylesheet" href="index.css" />
-    <link rel="shortcut icon" href="images/Crop8Hub nav-logo.svg" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="images/Crop8Hub nav-logo.svg"
+      type="image/x-icon"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -30,7 +34,7 @@
         <div class="nav-search">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search crops"
             class="nav-search-input"
             id="navSearchInput"
           />
@@ -38,13 +42,22 @@
             <img src="images/search icon.svg" alt="" />
           </a>
         </div>
-        <ul class="nav-links">
-          <!-- <li><a href="#home">Home</a></li> -->
+        <!-- Nav Links for NOT Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedOut">
           <li><a href="marketplace.html">Marketplace</a></li>
-          <li><a href="#about">About Us</a></li>
           <li><a href="#categories">Categories</a></li>
+          <li><a href="#about">About Us</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
+
+        <!-- Nav Links for Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
+          <li><a href="#home">Home</a></li>
+          <li><a href="marketplace.html">Marketplace</a></li>
+          <li><a href="orders/orders.html">Orders</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
         <div class="nav-auth">
           <button class="btn-auth" id="loginBtn">Login</button>
           <div class="user-menu" id="userMenu" style="display: none">
@@ -60,28 +73,43 @@
         </div>
       </div>
 
-      <ul class="mobile-nav-links" id="mobileNav">
-        <!-- <li><a href="#home">Home</a></li> -->
-        <span class="user-name" id="mobileUserName"> Hi Henry </span>
-
-        <li><a href="marketplace.html">Marketplace</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#categories">Categories</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <div class="mobile-auth">
-          <button class="btn-auth" id="loginBtn">Login</button>
-          <button class="btn-auth" id="logoutBtn">Logout</button>
-        </div>
-
-        <a href="#" id="hideNav">
+      <!-- Mobile Nav Links for NOT Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedOut">
+        <a href="#" id="hideNavLoggedOut">
           <img src="images/close icon.svg" alt="close icon" />
         </a>
+
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="mobileLoginBtn">Login</button>
+        </div>
+      </ul>
+
+      <!-- Mobile Nav Links for Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedIn" style="display: none">
+        <a href="#" id="hideNavLoggedIn">
+          <img src="images/close icon.svg" alt="close icon" />
+        </a>
+
+        <span class="user-name" id="mobileUserName">Hi Henry</span>
+
+        <li><a href="#home">Home</a></li>
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="orders/orders.html">Orders</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="mobileLogoutBtn">Logout</button>
+        </div>
       </ul>
     </nav>
 
     <section class="image-slider">
       <div class="slide-container">
-
         <div class="slide" id="slide1">
           <div class="slide-content">
             <h2>
