@@ -35,15 +35,15 @@ function showSlide(index) {
 
   // Remove active class from all slides and dots
   slides.forEach((slide) => slide.classList.remove("active"));
-  dots.forEach((dot) => dot.classList.remove("active"));
+  // dots.forEach((dot) => dot.classList.remove("active"));
 
   // Add active class to current slide and dot
   if (slides[currentSlideIndex]) {
     slides[currentSlideIndex].classList.add("active");
   }
-  if (dots[currentSlideIndex]) {
-    dots[currentSlideIndex].classList.add("active");
-  }
+  // if (dots[currentSlideIndex]) {
+  //   dots[currentSlideIndex].classList.add("active");
+  // }
 }
 
 function changeSlide(direction) {
