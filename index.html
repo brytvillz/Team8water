@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop8hub - Team 8 water</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="shortcut icon"
+      href="images/Crop8Hub nav-logo.svg"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar scrolled">
+      <div class="container">
+        <div class="nav-brand">
+          <img src="images/Crop8Hub nav-logo.svg" alt="" />
+        </div>
+        <div class="nav-search">
+          <input
+            type="text"
+            placeholder="Search crops"
+            class="nav-search-input"
+            id="navSearchInput"
+          />
+          <a href="#" class="nav-search-btn" id="navSearchBtn">
+            <img src="images/search icon.svg" alt="" />
+          </a>
+        </div>
+        <!-- Nav Links for NOT Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedOut">
+          <li><a href="marketplace.html">Marketplace</a></li>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <!-- Nav Links for Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
+          <li><a href="#home">Home</a></li>
+          <li><a href="marketplace.html">Marketplace</a></li>
+          <li><a href="orders/orders.html">Orders</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-auth">
+          <button class="btn-auth" id="loginBtn">Login</button>
+          <div class="user-menu" id="userMenu" style="display: none">
+            <span class="user-name" id="userName">Hi Henry</span>
+            <button class="btn-auth" id="logoutBtn">Logout</button>
+          </div>
+
+          <div class="mobile-toggle" id="mobileToggle">
+            <a href="#" id="showNav" onclick="showSidebar()">
+              <img src="images/nav icon.svg" alt="navigation icon" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Links for NOT Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedOut">
+        <a href="#" id="hideNavLoggedOut">
+          <img src="images/close icon.svg" alt="close icon" />
+        </a>
+
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="mobileLoginBtn">Login</button>
+        </div>
+      </ul>
+
+      <!-- Mobile Nav Links for Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedIn" style="display: none">
+        <a href="#" id="hideNavLoggedIn">
+          <img src="images/close icon.svg" alt="close icon" />
+        </a>
+
+        <span class="user-name" id="mobileUserName">Hi Henry</span>
+
+        <li><a href="#home">Home</a></li>
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="orders/orders.html">Orders</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="logoutBtn">Logout</button>
+        </div>
+      </ul>
+    </nav>
+
+    <section class="image-slider">
+      <div class="slide-container">
+        <div class="slide" id="slide1">
+          <div class="slide-content">
+            <h2>
+              From Our Rich Soil to Your Table: The Heart of Eastern Nigerian
+              Agriculture
+            </h2>
+            <button>Shop Now</button>
+          </div>
+        </div>
+
+        <div class="slide" id="slide2">
+          <div class="slide-content">
+            <h2>
+              Precision & Care: Ensuring Freshness from Our Hub to Your Hands
+            </h2>
+            <button>Shop Now</button>
+          </div>
+        </div>
+
+        <div class="slide" id="slide3">
+          <div class="slide-content">
+            <h2>Connecting Farms to Families: Our Reliable Delivery Network</h2>
+            <button>Shop Now</button>
+          </div>
+        </div>
+
+        <div class="slide" id="slide4">
+          <div class="slide-content">
+            <h2 id="slide4-text">
+              <span>The Heart of the Harvest, Delivered.</span>
+              Farm-Fresh Crops Delivered Straight to you.
+            </h2>
+            <button>Shop Now</button>
+          </div>
+        </div>
+
+        <!-- Slider Navigation Buttons -->
+        <button class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
+        <button class="slider-btn next" onclick="changeSlide(1)">❯</button>
+
+        <!-- Slider Dots -->
+        <div class="slider-dots">
+          <span class="dot active" onclick="currentSlide(0)"></span>
+          <span class="dot" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="crop-section" id="categories">
+      <h2 class="section-title">Browse by Crop Categories</h2>
+      <p>Find exactly what you're looking for from our diverse selection</p>
+      <div class="crop-grid">
+        <div class="crop-card">
+          <img src="images/root crop image.svg" alt="Crops" />
+          <h3>Root Crops</h3>
+          <p>Maize, Millet, Rice, Sorghum, Wheat</p>
+        </div>
+        <div class="crop-card">
+          <img src="images/grain crop image.svg" alt="Grains" />
+          <h3>Grains & Cereal</h3>
+          <p>Beans, Soybean, Groundnut (also considered an oilseed)</p>
+        </div>
+        <div class="crop-card">
+          <img src="images/Legumes crop.svg" alt="Legumes" />
+          <h3>Legumes</h3>
+          <p>Cassava, Yam Grown for their starchy underground parts.</p>
+        </div>
+      </div>
+      <p>
+        We deliver reliable, organic, and sustainably grown produce sourced from
+        the company’s farm and in partnership with trusted local framers. Enjoy
+        healthy food harvested at peak freshness
+      </p>
+    </section>
+
+    <section class="about-section" id="about">
+      <h1 class="section-title">About Us</h1>
+      <div class="about-top">
+        <div class="about-top-left">
+          <h2>Our Story</h2>
+          <p>
+            Our story begins with a deep connection to the land. We believe in
+            sustainable farming practices that honor our heritage and deliver
+            the highest quality crops from our family to yours.
+          </p>
+        </div>
+
+        <div class="about-top-right">
+          <h3>Why Shop With Us?</h3>
+          <ul class="shop-list">
+            <li>
+              <img src="images/check icon.svg" alt="check icon" />
+              Farm‑fresh produce delivered to your door
+            </li>
+            <li>
+              <img src="images/check icon.svg" alt="check icon" />
+              100% quality guarantee on all products
+            </li>
+            <li>
+              <img src="images/check icon.svg" alt="check icon" />
+              Support local farmers and sustainable practices
+            </li>
+            <li>
+              <img src="images/check icon.svg" alt="check icon" />
+              Competitive prices without middlemen
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="about-bottom">
+        <div class="about-bottom-content">
+          <h2>Our Mission</h2>
+          <p>
+            At <span>Crop8hub</span>, we bring the freshness of the farm
+            directly to your table. Our platform connects you with local
+            farmers, ensuring you get the highest quality produce at competitive
+            prices.<br />We're committed to supporting sustainable agriculture
+            while making it easy for you to access fresh, healthy, and delicious
+            crops year-round.
+          </p>
+
+          <div class="about-farm">
+            <div>
+              <h4>Our Heritage</h4>
+              <p>
+                For generations, we have tilled the soil, passing down knowledge
+                and a commitment to excellence.
+              </p>
+            </div>
+            <div>
+              <h4>Our Farming Philosophy</h4>
+              <p>
+                We combine age-old techniques with modern sustainability to
+                ensure healthy land and healthy food.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <img src="images/about us image.svg" alt="Farm Team" />
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="feature">
+        <img src="images/feature 1.svg" alt="feature image 1" />
+        <h4>Sustainably Sourced</h4>
+        <p>
+          Committed to practices that protects our planet for future
+          generations.
+        </p>
+      </div>
+      <div class="feature">
+        <img src="images/feature 2.svg" alt="feature image 2" />
+        <h4>Farmer-to-Table Freshness</h4>
+        <p>
+          Minimizing time from harvest to your home for peak flavor and
+          nutrition.
+        </p>
+      </div>
+      <div class="feature">
+        <img src="images/feature 3.svg" alt="feature image 3" />
+        <h4>Quality Guaranteed</h4>
+        <p>Every crop is inspected to meet our highest standard.</p>
+      </div>
+      <div class="feature">
+        <img src="images/feature 4.svg" alt="feature image 4" />
+        <h4>Community Focused</h4>
+        <p>Supporting our local community is at the heart of what we do.</p>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <h1>Contact <span>Crop8hub</span></h1>
+      <p>Help us to serve you better</p>
+
+      <div class="contact-grid">
+        <!-- LEFT FORM -->
+        <div>
+          <h3>Send Us a Message</h3>
+
+          <form>
+            <div>
+              <label>
+                <img src="images/user icon.svg" alt="user icon" />
+                Name
+              </label>
+              <input type="text" placeholder="Full Name" />
+            </div>
+
+            <div>
+              <label>
+                <img src="images/mail icon.svg" alt="mail icon" />
+                Email</label
+              >
+              <input type="email" placeholder="Enter e-mail address" />
+            </div>
+
+            <div>
+              <label>
+                <img src="images/location icon.svg" alt="location icon" />
+                Location</label
+              >
+              <input type="text" placeholder="Location" />
+            </div>
+
+            <div>
+              <label>
+                <img src="images/phone icon.svg" alt="phone icon" />
+                Phone</label
+              >
+              <input type="text" placeholder="Phone number" />
+            </div>
+
+            <div>
+              <label>Report/review</label>
+              <textarea rows="5" placeholder="Message..."></textarea>
+            </div>
+
+            <button>Submit</button>
+          </form>
+        </div>
+
+        <!-- RIGHT INFO -->
+        <div>
+          <h3>Contact Information</h3>
+
+          <div class="contact-info">
+            <div>
+              <img src="images/location icon.svg" alt="location icon" />
+              <p>
+                <strong>Our Office</strong>123 Harvest Lane, Greenfield, AG
+                54321
+              </p>
+            </div>
+
+            <div>
+              <img src="images/phone icon.svg" alt="phone icon" />
+              <p><strong>Phone</strong>+131 - 365 - 35635</p>
+            </div>
+
+            <div>
+              <img src="images/mail icon.svg" alt="mail icon" />
+              <p><strong>Email</strong>contactTeam@crop8hub.com</p>
+            </div>
+          </div>
+
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31517.22957298251!2d7.4725!3d9.0579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b0f7c55aaaa%3A0x4c6e3db4e7c3e7a1!2sGreenfield!5e0!3m2!1sen!2sng!4v1234567890"
+            width="100%"
+            height="350"
+            style="border: 0; border-radius: 0.5rem"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <section>
+        <div class="footer-logo">
+          <img src="images/Crop8hub footer-logo.svg" alt="footer logo" />
+          <p>The food giants of Gensys Commuinty</p>
+          <p>From our fields to your table, the freshest of crop guaranteed</p>
+        </div>
+
+        <nav>
+          <h5>Quick links</h5>
+          <ul class="footer-navbar">
+            <li><a href="#">MarketPlace</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Categories</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-contact">
+          <h5>Contact Us</h5>
+          <p>
+            <i class="fa-solid fa-location-dot"></i>
+            123 Harvest Lane, Greenfield, AG 54321
+          </p>
+
+          <p>
+            <i class="fa-solid fa-envelope"></i>
+            Email: contact@crop8hub.com
+          </p>
+
+          <p>
+            <i class="fa-solid fa-globe"></i>
+            www.crop8hub.com
+          </p>
+
+          <p>
+            <i class="fa-solid fa-phone"></i>
+            (123) 1-2324-234-4356
+          </p>
+        </div>
+
+        <div class="footer-socials">
+          <h5>Our Socials</h5>
+          <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-square-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </section>
+      <p class="footer-credit">
+        <i class="fa-regular fa-copyright"></i>
+        2025 8Garden. All Rights Reserved. | Privacy Policy | Terms of Services
+      </p>
+    </footer>
+
+    <!-- Login/ register Modal -->
+    <div class="modal-container">
+      <!-- Login Modal -->
+      <section class="signIn-card" id="loginForm">
+        <div class="signInUp-head">
+          <h2>Get Started</h2>
+          <p>Welcome! We're thrilled to have you</p>
+
+          <a href="#" id="formClose"
+            ><img src="images/close icon.svg" alt="close icon"
+          /></a>
+        </div>
+        <form id="loginForm">
+          <div>
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" placeholder="pizza@gmail.com" />
+          </div>
+
+          <div>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="password" />
+          </div>
+          <p class="pass-get">Forgot password ?</p>
+
+          <button type="submit" id="loginSubmitBtn">Sign In</button>
+          <p class="signUp-direct">
+            Don't have an account yet ?
+            <a href="#" id="switchToRegister">Sign up</a>
+          </p>
+        </form>
+      </section>
+      <!-- Registration Modal -->
+      <section class="signUp-card" id="registerForm">
+        <div class="signInUp-head">
+          <h2>Create Your Account</h2>
+          <p class="signUp-direct">
+            Already a member? <a href="#" id="switchToLogin">Sign In</a>
+          </p>
+
+          <a href="#" id="formClose"
+            ><img src="images/close icon.svg" alt="close icon"
+          /></a>
+        </div>
+        <form id="registerForm">
+          <section>
+            <div>
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" placeholder="John" />
+            </div>
+
+            <div>
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" placeholder="English" />
+            </div>
+          </section>
+
+          <div>
+            <label for="registerEmail">Email</label>
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="pizza@gmail.com"
+            />
+          </div>
+
+          <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="South-East" />
+          </div>
+
+          <div>
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Password"
+            />
+          </div>
+
+          <div>
+            <label for="registerConfirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="registerConfirmPassword"
+              placeholder="Password"
+            />
+          </div>
+
+          <button type="submit">Sign In</button>
+        </form>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
