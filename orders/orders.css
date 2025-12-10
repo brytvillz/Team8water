@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f5f6f3;
+}
+
+
+
+/* MAIN WRAPPER */
+.wrapper {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* ORDER CARD */
+.order-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 0.3s ease;
+}
+
+/* FLEX HEADER */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* GENERAL BOX */
+.box {
+  background: #eef3e4;
+  padding: 16px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT FOR EACH CONTAINER */
+.box:hover {
+  background: #dfead0;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+}
+
+/* DATE & STATUS */
+.date {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.status {
+  background: #f2c879;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* ORDER ITEMS */
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 5px;
+  border-bottom: 1px solid #ccc;
+  transition: background 0.3s ease;
+}
+
+.item:hover {
+  background: #cedab7;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+/* SUMMARY */
+.summary {
+  display: flex;
+  justify-content: space-between;
+}
+
+.amount {
+  text-align: right;
+}
+
+.amount strong {
+  color: #4b6b2f;
+  font-size: 1.1rem;
+}
