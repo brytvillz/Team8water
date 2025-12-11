@@ -495,6 +495,8 @@ function setupProductCardListeners(card) {
       quantityInput.value = "";
     }
     updateGlobalSummary();
+    // Save state whenever checkbox changes
+    saveMarketplaceState();
   });
 
   qtyUpButton.addEventListener("click", () => {
@@ -594,20 +596,20 @@ function saveMarketplaceState() {
     const quantityInput = card.querySelector('input[type="number"]');
     const productName = card.querySelector("h3")?.textContent;
 
-    if (checkbox && checkbox.checked && productName) {
+    if (productName) {
+      // Save ALL products, not just checked ones
       marketplaceState.push({
         productName: productName,
-        quantity: parseInt(quantityInput.value) || 1,
-        checked: true,
+        quantity:
+          checkbox && checkbox.checked ? parseInt(quantityInput.value) || 1 : 0,
+        checked: checkbox ? checkbox.checked : false,
       });
     }
   });
 
-  if (marketplaceState.length > 0) {
-    localStorage.setItem("marketplaceState", JSON.stringify(marketplaceState));
-    // Also save the current page URL for proper navigation back
-    localStorage.setItem("marketplacePage", window.location.pathname);
-  }
+  localStorage.setItem("marketplaceState", JSON.stringify(marketplaceState));
+  // Also save the current page URL for proper navigation back
+  localStorage.setItem("marketplacePage", window.location.pathname);
 } // ===== Function to Restore Marketplace State =====
 function restoreMarketplaceSelections() {
   const savedState = localStorage.getItem("marketplaceState");
@@ -623,23 +625,27 @@ function restoreMarketplaceSelections() {
       const checkbox = card.querySelector('input[type="checkbox"]');
       const quantityInput = card.querySelector('input[type="number"]');
 
-      // Find if this product was selected
+      // Find if this product was saved
       const savedProduct = marketplaceState.find(
         (item) => item.productName === productName
       );
 
       if (savedProduct && checkbox && quantityInput) {
-        checkbox.checked = true;
-        quantityInput.disabled = false;
-        quantityInput.value = savedProduct.quantity;
+        // Restore the exact state (checked or unchecked)
+        checkbox.checked = savedProduct.checked;
+
+        if (savedProduct.checked && savedProduct.quantity > 0) {
+          quantityInput.disabled = false;
+          quantityInput.value = savedProduct.quantity;
+        } else {
+          quantityInput.disabled = true;
+          quantityInput.value = "";
+        }
       }
     });
 
     // Update the summary after restoring
     updateGlobalSummary();
-
-    // Clear the saved state after restoring (optional - remove this if you want to keep it)
-    // localStorage.removeItem("marketplaceState");
   } catch (error) {
     console.error("Error restoring marketplace selections:", error);
   }

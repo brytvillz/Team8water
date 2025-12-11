@@ -420,7 +420,7 @@ body {
 .crop-section {
   padding: 2.5rem 1.5rem;
   text-align: center;
-  background-image: url(images/categories\ BGimage.svg);
+  background-image: url(images/categories\ BGimage.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: clamp(100%, 50%, 500px);
@@ -594,7 +594,7 @@ body {
 .survey-left h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #000;
+  color: #667e06;
   margin-bottom: 0.5rem;
 }
 
@@ -654,11 +654,12 @@ body {
   display: flex;
   gap: 1rem;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .survey-profile img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
@@ -666,11 +667,13 @@ body {
   font-weight: 700;
   color: #000;
   display: block;
+  font-size: 1rem;
 }
 
 .survey-profile p {
   color: #666;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
 }
 
 .stats-container {
@@ -680,10 +683,11 @@ body {
 }
 
 .stats {
-  background-color: #fff;
+  background-color: #e8ebcf;
   padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+  border: 2px solid #667e06;
+  text-align: center;
 }
 
 .stats h1 {
@@ -694,8 +698,9 @@ body {
 }
 
 .stats p {
-  color: #666;
-  font-size: 0.9rem;
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 /* NEEDS SECTION */
@@ -705,18 +710,9 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   position: relative;
-}
-
-.needs-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  z-index: 1;
+  min-height: 600px;
 }
 
 .slide-section {
@@ -732,33 +728,150 @@ body {
   margin-bottom: 2rem;
 }
 
-.cardSlide-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+.cardSlide-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
   margin-bottom: 2rem;
+  padding: 2rem 0;
+}
+
+.carousel-btn {
+  background-color: rgba(102, 126, 6, 0.9);
+  color: #fff;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.carousel-btn:hover {
+  background-color: #667e06;
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(102, 126, 6, 0.4);
+}
+
+.carousel-btn:active {
+  transform: scale(0.95);
+}
+
+.cardSlide-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 550px;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+}
+
+/* Floating bounce animation for center card */
+@keyframes floatBounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1.05) rotateY(0deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-15px) scale(1.05) rotateY(0deg);
+  }
 }
 
 .slide-card {
+  position: absolute;
   background-color: #fff;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
 }
 
 .slide-card:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Left card (small, only image) - positioned with circular rotation */
+.slide-card[data-position="0"] {
+  left: 0;
+  transform: translateX(0) translateZ(-100px) rotateY(-25deg) scale(0.85);
+  opacity: 0.7;
+  z-index: 1;
+  width: 260px;
+  filter: brightness(0.95);
+}
+
+/* Center card (large, image + description with floating animation) */
+.slide-card[data-position="1"] {
+  left: 50%;
+  animation: floatBounce 3s ease-in-out infinite;
+  opacity: 1;
+  z-index: 3;
+  width: 380px;
+  box-shadow: 0 10px 40px rgba(102, 126, 6, 0.3);
+}
+
+/* Right card (small, only image) - positioned with circular rotation */
+.slide-card[data-position="2"] {
+  right: 0;
+  transform: translateX(0) translateZ(-100px) rotateY(25deg) scale(0.85);
+  opacity: 0.7;
+  z-index: 1;
+  width: 260px;
+  filter: brightness(0.95);
+}
+
+/* Hidden card (off-screen) - rotated away */
+.slide-card[data-position="3"] {
+  left: 50%;
+  transform: translateX(-50%) translateZ(-200px) rotateY(90deg) scale(0.5);
+  opacity: 0;
+  z-index: 0;
+  width: 200px;
+  pointer-events: none;
 }
 
 .slide-card img {
   width: 100%;
-  height: 200px;
+  height: 260px;
   object-fit: cover;
+  transition: all 4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: block;
+}
+
+/* Center card has taller image */
+.slide-card[data-position="1"] img {
+  height: 320px;
 }
 
 .slideCard-content {
   padding: 1.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(-10px);
+}
+
+/* Only center card shows description */
+.slide-card[data-position="1"] .slideCard-content {
+  opacity: 1;
+  max-height: 250px;
+  transform: translateY(0);
 }
 
 .slideCard-content span {
@@ -766,6 +879,7 @@ body {
   color: #000;
   display: block;
   margin-bottom: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .slideCard-content p {
@@ -1683,16 +1797,82 @@ section:nth-child(4) {
   }
 
   /* Needs Section Mobile */
+  .needs-section {
+    padding: 2rem 1.5rem;
+    min-height: 500px;
+  }
+
   .slide-section h2 {
     font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cardSlide-carousel {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .carousel-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .cardSlide-container {
-    grid-template-columns: 1fr;
+    height: 450px;
+    max-width: 100%;
+    padding: 0 10px;
   }
 
-  .slide-card img {
-    height: 180px;
+  /* Mobile: Reduce floating animation */
+  @keyframes floatBounce {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+    50% {
+      transform: translateX(-50%) translateY(-8px) scale(1);
+    }
+  }
+
+  .slide-card[data-position="0"] {
+    width: 170px;
+    transform: translateX(-25%) scale(0.75);
+    opacity: 0.6;
+  }
+
+  .slide-card[data-position="1"] {
+    width: 300px;
+    animation: floatBounce 3s ease-in-out infinite;
+  }
+
+  .slide-card[data-position="1"] img {
+    height: 240px;
+  }
+
+  .slide-card[data-position="2"] {
+    width: 170px;
+    transform: translateX(25%) scale(0.75);
+    opacity: 0.6;
+  }
+
+  .slideCard-content {
+    padding: 1rem;
+  }
+
+  .slideCard-content span {
+    font-size: 1rem;
+  }
+
+  .slideCard-content p {
+    font-size: 0.85rem;
+  }
+
+  .slide-section > p {
+    font-size: 0.9rem;
+    padding: 0 1rem;
   }
 
   .crop-grid {

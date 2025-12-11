@@ -418,6 +418,7 @@ class PaymentSystem {
     // Clear marketplace state after successful payment
     localStorage.removeItem("marketplaceState");
     localStorage.removeItem("marketplacePage");
+    localStorage.removeItem("currentOrder");
 
     proceedBtn.disabled = false;
     proceedBtn.textContent = originalText;
@@ -469,6 +470,7 @@ class PaymentSystem {
     // Clear marketplace state after successful payment
     localStorage.removeItem("marketplaceState");
     localStorage.removeItem("marketplacePage");
+    localStorage.removeItem("currentOrder");
 
     proceedBtn.disabled = false;
     proceedBtn.textContent = originalText;
@@ -514,6 +516,7 @@ class PaymentSystem {
     // Clear marketplace state after successful payment
     localStorage.removeItem("marketplaceState");
     localStorage.removeItem("marketplacePage");
+    localStorage.removeItem("currentOrder");
 
     proceedBtn.disabled = false;
     proceedBtn.textContent = originalText;

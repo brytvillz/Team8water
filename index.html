@@ -52,7 +52,7 @@
 
         <!-- Nav Links for Logged In Users -->
         <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
-          <li><a href="#home">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li>
             <a href="marketplace/market.html" id="marketplaceLinkLoggedIn"
               >Marketplace</a
@@ -104,7 +104,7 @@
 
         <span class="user-name" id="mobileUserName">Hi Henry</span>
 
-        <li><a href="#home">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li>
           <a href="marketplace/market.html" id="mobileMarketplaceLinkLoggedIn"
             >Marketplace</a
@@ -295,10 +295,10 @@
         <div class="survey">
           <img src="images/survey image2.svg" alt="survey image2" />
           <div>
-            <span>Customer-First Approach</span>
+            <span>Data-Backed Decisions</span>
             <p>
-              Every feature we build is based on real customer feedback and
-              data-driven insights.
+              Our team conducts regular surveys and analysis to continuously
+              improve your experience.
             </p>
           </div>
         </div>
@@ -347,51 +347,56 @@
       <div class="slide-section">
         <h2>Built Around Your Needs</h2>
 
-        <div class="cardSlide-container">
-          <div class="slide-card">
-            <img src="images/card-slide1.jpg" alt="card-slide1" />
-            <div class="slideCard-content">
-              <span>Daily/Weekly Disscounts</span>
-              <p>
-                Get exclusive discount on produce like sorghum, yam, Beans, on
-                our daily discount sales. A food bank for all.
-              </p>
+        <div class="cardSlide-carousel">
+          <button class="carousel-btn prev-btn" id="prevCard">❮</button>
+
+          <div class="cardSlide-container">
+            <div class="slide-card" data-position="0">
+              <img src="images/card-slide1.jpg" alt="card-slide1" />
+              <div class="slideCard-content">
+                <span>Daily/Weekly Discounts</span>
+                <p>
+                  Get exclusive discount on produce like sorghum, yam, Beans, on
+                  our daily discount sales. A food bank for all.
+                </p>
+              </div>
+            </div>
+
+            <div class="slide-card" data-position="1">
+              <img src="images/card-slide2.jpg" alt="card-slide2" />
+              <div class="slideCard-content">
+                <span>Daily/Weekly Discounts</span>
+                <p>
+                  Get exclusive discount on produce like sorghum, yam, Beans, on
+                  our daily discount sales. A food bank for all.
+                </p>
+              </div>
+            </div>
+
+            <div class="slide-card" data-position="2">
+              <img src="images/card-slide3.jpg" alt="card-slide3" />
+              <div class="slideCard-content">
+                <span>Multiple payment options</span>
+                <p>
+                  Choose how you want to pay. Pay on Delivery, Debit Card, or
+                  Bank Transfer. Your convenience, Your choice.
+                </p>
+              </div>
+            </div>
+
+            <div class="slide-card" data-position="3">
+              <img src="images/card-slide4.jpg" alt="card-slide4" />
+              <div class="slideCard-content">
+                <span>Easy Navigation</span>
+                <p>
+                  Designed for everyone, whether you are a tech savvy or not.
+                  Simple, clear, and straightforward UI.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="slide-card">
-            <img src="images/card-slide2.jpg" alt="card-slide2" />
-            <div class="slideCard-content">
-              <span>Daily/Weekly Discounts</span>
-              <p>
-                Get exclusive discount on produce like sorghum, yam, Beans, on
-                our daily discount sales. A food bank for all.
-              </p>
-            </div>
-          </div>
-
-          <div class="slide-card">
-            <img src="images/card-slide3.jpg" alt="card-slide3" />
-            <div class="slideCard-content">
-              <span>Multiple payment options</span>
-              <p>
-                Choose how you want to pay. Pay on Delivery, Debit Card, or Bank
-                Transfer. Your conveniences, Your choice.
-              </p>
-            </div>
-          </div>
-
-          <div class="slide-card">
-            <img src="images/card-slide4.jpg" alt="card-slide4" />
-            <div class="slideCard-content">
-              <span>Easy Navigation</span>
-              <p>
-                Designed for everyone, whether you are a tech savvy or not.
-                Simple, clear, and straightforward UI.
-              </p>
-            </div>
-          </div>
-          
+          <button class="carousel-btn next-btn" id="nextCard">❯</button>
         </div>
 
         <p>
@@ -696,5 +701,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="carousel.js"></script>
   </body>
 </html>
