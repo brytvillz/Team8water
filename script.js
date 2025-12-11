@@ -8,6 +8,20 @@ const navLinksLoggedIn = document.getElementById("navLinksLoggedIn");
 const navLinks = document.querySelectorAll(".mobile-nav-links li");
 const navBar = document.querySelector(".container");
 
+// ===== Service Worker Registration for Faster Loading =====
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("ServiceWorker registered:", registration.scope);
+      })
+      .catch((error) => {
+        console.log("ServiceWorker registration failed:", error);
+      });
+  });
+}
+
 // Footer navigation elements
 const footerNavLoggedOut = document.getElementById("footerNavLoggedOut");
 const footerNavLoggedIn = document.getElementById("footerNavLoggedIn");

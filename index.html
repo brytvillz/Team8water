@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crop8hub - Team 8 water</title>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="index.css" as="style" />
+    <link rel="preload" href="images/hero image1.jpg" as="image" />
+    <link rel="preload" href="images/Crop8Hub nav-logo.svg" as="image" />
+
     <link rel="stylesheet" href="index.css" />
     <link
       rel="shortcut icon"
@@ -276,7 +282,11 @@
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="images/about us image.jpg" alt="Farm Team" />
+              <img
+                src="images/about us image.jpg"
+                alt="Farm Team"
+                loading="lazy"
+              />
             </div>
             <div class="flip-card-back">
               <div class="flip-card-content">
@@ -372,7 +382,11 @@
         <div class="cardSlide-carousel">
           <div class="cardSlide-container">
             <div class="slide-card" data-position="0">
-              <img src="images/card-slide1.jpg" alt="card-slide1" />
+              <img
+                src="images/card-slide1.jpg"
+                alt="card-slide1"
+                loading="lazy"
+              />
               <div class="slideCard-content">
                 <span>Daily/Weekly Discounts</span>
                 <p>
@@ -383,7 +397,11 @@
             </div>
 
             <div class="slide-card" data-position="1">
-              <img src="images/card-slide2.jpg" alt="card-slide2" />
+              <img
+                src="images/card-slide2.jpg"
+                alt="card-slide2"
+                loading="lazy"
+              />
               <div class="slideCard-content">
                 <span>Daily/Weekly Discounts</span>
                 <p>
@@ -394,7 +412,11 @@
             </div>
 
             <div class="slide-card" data-position="2">
-              <img src="images/card-slide3.jpg" alt="card-slide3" />
+              <img
+                src="images/card-slide3.jpg"
+                alt="card-slide3"
+                loading="lazy"
+              />
               <div class="slideCard-content">
                 <span>Multiple payment options</span>
                 <p>
@@ -405,7 +427,11 @@
             </div>
 
             <div class="slide-card" data-position="3">
-              <img src="images/card-slide4.jpg" alt="card-slide4" />
+              <img
+                src="images/card-slide4.jpg"
+                alt="card-slide4"
+                loading="lazy"
+              />
               <div class="slideCard-content">
                 <span>Easy Navigation</span>
                 <p>
@@ -718,6 +744,8 @@
       </section>
     </div>
 
+    <!-- Image Optimization Script - Load First -->
+    <script src="image-optimizer.js"></script>
     <script src="script.js"></script>
     <script src="carousel.js"></script>
   </body>
