@@ -26,10 +26,16 @@
 
   // 1. Create low-quality placeholder
   function createPlaceholder(element) {
-    const originalBg = element.style.backgroundImage;
-    element.style.backgroundColor = config.placeholderColor;
-    element.setAttribute("data-bg", originalBg);
-    element.style.backgroundImage = "none";
+    // Get computed background image (from CSS)
+    const computedStyle = window.getComputedStyle(element);
+    const originalBg = computedStyle.backgroundImage;
+    
+    // Only create placeholder if there's actually a background image
+    if (originalBg && originalBg !== 'none') {
+      element.style.backgroundColor = config.placeholderColor;
+      element.setAttribute("data-bg", originalBg);
+      element.style.backgroundImage = "none";
+    }
   }
 
   // 2. Preload critical images
@@ -122,77 +128,43 @@
 
   // 5. Setup lazy loading for specific sections
   function setupSectionLazyLoad() {
-    // Hero slides (except first one)
-    const slides = document.querySelectorAll(".slide");
-    slides.forEach((slide, index) => {
-      if (index > 0) {
-        // Don't lazy load first slide
-        createPlaceholder(slide);
+    // Wait for DOM to be fully ready
+    setTimeout(() => {
+      // DON'T lazy load hero slides - they should all load normally
+      // The CSS will handle them fine
+      
+      // DON'T lazy load category section - it's important and visible
+      
+      // Only lazy load carousel section background (it's further down)
+      const carouselSection = document.querySelector(".slide-section");
+      if (carouselSection) {
+        createPlaceholder(carouselSection);
       }
-    });
 
-    // Category section background
-    const categorySection = document.querySelector(".crop-section");
-    if (categorySection) {
-      createPlaceholder(categorySection);
-    }
-
-    // Carousel section background
-    const carouselSection = document.querySelector(".slide-section");
-    if (carouselSection) {
-      createPlaceholder(carouselSection);
-    }
-
-    // About section image
-    const aboutImages = document.querySelectorAll(".about-content img");
-    aboutImages.forEach((img) => {
-      if (!img.loading) {
-        img.loading = "lazy";
-      }
-    });
-
-    // Carousel card images
-    const cardImages = document.querySelectorAll(".slide-card img");
-    cardImages.forEach((img) => {
-      if (!img.loading) {
-        img.loading = "lazy";
-      }
-    });
-  }
-
-  // 6. Preload next hero slide
-  function preloadNextSlide() {
-    const slides = document.querySelectorAll(".slide");
-    let currentIndex = 0;
-
-    setInterval(() => {
-      const nextIndex = (currentIndex + 1) % slides.length;
-      const nextSlide = slides[nextIndex];
-
-      if (nextSlide && nextSlide.hasAttribute("data-bg")) {
-        const bgImage = nextSlide.getAttribute("data-bg");
-        const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
-
-        if (urlMatch && urlMatch[1]) {
-          const img = new Image();
-          img.onload = () => {
-            nextSlide.style.backgroundImage = bgImage;
-            nextSlide.removeAttribute("data-bg");
-          };
-          img.src = urlMatch[1];
+      // About section image - native lazy loading
+      const aboutImages = document.querySelectorAll(".about-content img, .flip-card img");
+      aboutImages.forEach((img) => {
+        if (!img.loading) {
+          img.loading = "lazy";
         }
-      }
+      });
 
-      currentIndex = nextIndex;
-    }, 6000); // Preload 2 seconds before slide change (8s interval - 2s)
+      // Carousel card images - native lazy loading
+      const cardImages = document.querySelectorAll(".slide-card img");
+      cardImages.forEach((img) => {
+        if (!img.loading) {
+          img.loading = "lazy";
+        }
+      });
+    }, 100);
   }
 
-  // 7. Initialize optimization
+  // 6. Initialize optimization
   function init() {
     // Add loading transitions
     addLoadingTransition();
 
-    // Setup lazy loading for sections
+    // Setup lazy loading for sections (only carousel section now)
     setupSectionLazyLoad();
 
     // Preload critical images first
@@ -200,15 +172,10 @@
       .then(() => {
         console.log("Critical images preloaded");
 
-        // Then setup lazy loading for other images
+        // Then setup lazy loading for other images (carousel background)
         setTimeout(() => {
           setupLazyLoading();
         }, 100);
-
-        // Preload next slides
-        setTimeout(() => {
-          preloadNextSlide();
-        }, 2000);
       })
       .catch((err) => {
         console.error("Error preloading critical images:", err);
