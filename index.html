@@ -44,7 +44,7 @@
         </div>
         <!-- Nav Links for NOT Logged In Users -->
         <ul class="nav-links" id="navLinksLoggedOut">
-          <li><a href="marketplace.html">Marketplace</a></li>
+          <li><a href="#" id="marketplaceLinkLoggedOut">Marketplace</a></li>
           <li><a href="#categories">Categories</a></li>
           <li><a href="#about">About Us</a></li>
           <li><a href="#contact">Contact</a></li>
@@ -53,8 +53,13 @@
         <!-- Nav Links for Logged In Users -->
         <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
           <li><a href="#home">Home</a></li>
-          <li><a href="marketplace.html">Marketplace</a></li>
+          <li>
+            <a href="marketplace/market.html" id="marketplaceLinkLoggedIn"
+              >Marketplace</a
+            >
+          </li>
           <li><a href="orders/orders.html">Orders</a></li>
+          <li><a href="profile/profile.html">Profile</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -66,6 +71,12 @@
           </div>
 
           <div class="mobile-toggle" id="mobileToggle">
+            <span
+              class="user-name mobile-user-display"
+              id="mobileUserDisplay"
+              style="display: none; margin-right: 10px"
+              >Hi Henry</span
+            >
             <a href="#" id="showNav" onclick="showSidebar()">
               <img src="images/nav icon.svg" alt="navigation icon" />
             </a>
@@ -79,14 +90,10 @@
           <img src="images/close icon.svg" alt="close icon" />
         </a>
 
-        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="#" id="mobileMarketplaceLinkLoggedOut">Marketplace</a></li>
         <li><a href="#categories">Categories</a></li>
         <li><a href="#about">About Us</a></li>
         <li><a href="#contact">Contact</a></li>
-
-        <div class="mobile-auth">
-          <button class="btn-auth" id="mobileLoginBtn">Login</button>
-        </div>
       </ul>
 
       <!-- Mobile Nav Links for Logged In Users -->
@@ -98,12 +105,17 @@
         <span class="user-name" id="mobileUserName">Hi Henry</span>
 
         <li><a href="#home">Home</a></li>
-        <li><a href="marketplace.html">Marketplace</a></li>
+        <li>
+          <a href="marketplace/market.html" id="mobileMarketplaceLinkLoggedIn"
+            >Marketplace</a
+          >
+        </li>
         <li><a href="orders/orders.html">Orders</a></li>
+        <li><a href="profile/profile.html">Profile</a></li>
         <li><a href="#contact">Contact</a></li>
 
         <div class="mobile-auth">
-          <button class="btn-auth" id="logoutBtn">Logout</button>
+          <button class="btn-auth" id="mobileLogoutBtn">Logout</button>
         </div>
       </ul>
     </nav>
@@ -168,16 +180,25 @@
           <img src="images/root crop image.svg" alt="Crops" />
           <h3>Root Crops</h3>
           <p>Maize, Millet, Rice, Sorghum, Wheat</p>
+          <button class="category-btn" data-category="tubers">
+            Browse Root Crops
+          </button>
         </div>
         <div class="crop-card">
           <img src="images/grain crop image.svg" alt="Grains" />
           <h3>Grains & Cereal</h3>
           <p>Beans, Soybean, Groundnut (also considered an oilseed)</p>
+          <button class="category-btn" data-category="cereals">
+            Browse Grains & Cereal
+          </button>
         </div>
         <div class="crop-card">
           <img src="images/Legumes crop.svg" alt="Legumes" />
           <h3>Legumes</h3>
           <p>Cassava, Yam Grown for their starchy underground parts.</p>
+          <button class="category-btn" data-category="legumes">
+            Browse Legumes
+          </button>
         </div>
       </div>
       <p>
@@ -384,11 +405,27 @@
 
         <nav>
           <h5>Quick links</h5>
-          <ul class="footer-navbar">
-            <li><a href="#">MarketPlace</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Categories</a></li>
+          <!-- Footer Links for NOT Logged In Users -->
+          <ul class="footer-navbar" id="footerNavLoggedOut">
+            <li>
+              <a href="#" id="footerMarketplaceLinkLoggedOut">Marketplace</a>
+            </li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+
+          <!-- Footer Links for Logged In Users -->
+          <ul
+            class="footer-navbar"
+            id="footerNavLoggedIn"
+            style="display: none"
+          >
+            <li><a href="index.html">Home</a></li>
+            <li><a href="marketplace/market.html">Marketplace</a></li>
+            <li><a href="orders/orders.html">Orders</a></li>
+            <li><a href="profile/profile.html">Profile</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
 
@@ -417,9 +454,22 @@
 
         <div class="footer-socials">
           <h5>Our Socials</h5>
-          <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
-          <a href="#"><i class="fa-brands fa-square-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a
+            href="https://x.com/brytvillz_rapz/status/1996147624743690704?s=20"
+            id="xSocialLink"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a
+            href="https://www.linkedin.com/posts/codedbryt-ezeribe-6b257b390_week-3-web-development-stage-this-marks-activity-7401917226104320001-Ozyx?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGAxQSYBAC1Ggie_A6E2rjCaezyUcLmeg9M"
+            id="linkedinSocialLink"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
         </div>
       </section>
       <p class="footer-credit">

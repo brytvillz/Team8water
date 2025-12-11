@@ -8,25 +8,105 @@
     <title>Marketplace</title>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <img src="../images/Crop8Hub nav-logo.svg" alt="Crop8Hub Logo" />
+        </div>
+        <div class="nav-search">
+          <input
+            type="text"
+            placeholder="Search crops"
+            class="nav-search-input"
+            id="navSearchInput"
+          />
+          <a href="#" class="nav-search-btn" id="navSearchBtn">
+            <img src="../images/search icon.svg" alt="" />
+          </a>
+        </div>
+        
+        <!-- Nav Links for NOT Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedOut">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="market.html" class="active">Marketplace</a></li>
+          <li><a href="../index.html#categories">Categories</a></li>
+          <li><a href="../index.html#about">About Us</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+
+        <!-- Nav Links for Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="market.html" class="active">Marketplace</a></li>
+          <li><a href="../orders/orders.html">Orders</a></li>
+          <li><a href="../profile/profile.html">Profile</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-auth">
+          <button class="btn-auth" id="loginBtn">Login</button>
+          <div class="user-menu" id="userMenu" style="display: none">
+            <span class="user-name" id="userName">Hi Henry</span>
+            <button class="btn-auth" id="logoutBtn">Logout</button>
+          </div>
+
+          <div class="mobile-toggle" id="mobileToggle">
+            <span
+              class="user-name mobile-user-display"
+              id="mobileUserDisplay"
+              style="display: none; margin-right: 10px"
+              >Hi Henry</span
+            >
+            <a href="#" id="showNav">
+              <img src="../images/nav icon.svg" alt="navigation icon" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Links for NOT Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedOut">
+        <a href="#" id="hideNavLoggedOut">
+          <img src="../images/close icon.svg" alt="close icon" />
+        </a>
+
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="market.html">Marketplace</a></li>
+        <li><a href="../index.html#categories">Categories</a></li>
+        <li><a href="../index.html#about">About Us</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+
+      <!-- Mobile Nav Links for Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedIn" style="display: none">
+        <a href="#" id="hideNavLoggedIn">
+          <img src="../images/close icon.svg" alt="close icon" />
+        </a>
+
+        <span class="user-name" id="mobileUserName">Hi Henry</span>
+
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="market.html">Marketplace</a></li>
+        <li><a href="../orders/orders.html">Orders</a></li>
+        <li><a href="../profile/profile.html">Profile</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="mobileLogoutBtn">Logout</button>
+        </div>
+      </ul>
+    </nav>
+
     <div id="container">
         <div id="topPart">
     <div id="topPartLeft">
-        <img alt="backbuttonIcon" src="./images/back-button.png">
+        <a href="../index.html" id="backButton">
+            <img alt="backbuttonIcon" src="./images/back-button.png">
+        </a>
         <h3>Market Place</h3>
-
-        <div class="search-box">
-        <input type="text" placeholder="Search">
-        <button class="search-btn flipped">⌕</button>
-        </div>
     </div>
-
-    <div id="topPartRight">
-        <img alt="cashoutIcon" src="./images/Cashout_logo.png">
-        <p id="checkoutText">Checkout</p>
-    </div>
-</div>
-
-        <div id="secondPart">
+    </div>        <div id="secondPart">
             <h1>Explore Our Harvest</h1>
             <div id="secondPartCategories">
                 <div id="secondPartLeft">
@@ -34,9 +114,9 @@
             </div>
             <div id="secondPartRight">
                 <a href="market.html">All Crops</a>
-                <a href="cereals.html">Cereals</a>
-                <a href="legumes.html">Legumes</a>
-                <a href="tubers.html">Tubers</a>
+                <a href="market.html?category=cereals">Cereals</a>
+                <a href="market.html?category=legumes">Legumes</a>
+                <a href="market.html?category=tubers">Tubers</a>
             </div>
             </div>
         </div>
@@ -66,7 +146,7 @@
                     <p id="two">Total: ₦0.00</p>
                 </div>
                 <div id="forthPartTopRight">
-                    <button>Proceed to Payment</button>
+                    <button id="proceedToPaymentBtn">Proceed to Payment</button>
                 </div>
             </div>
             <div id="forthPartMid">

@@ -8,14 +8,18 @@ const navLinksLoggedIn = document.getElementById("navLinksLoggedIn");
 const navLinks = document.querySelectorAll(".mobile-nav-links li");
 const navBar = document.querySelector(".container");
 
+// Footer navigation elements
+const footerNavLoggedOut = document.getElementById("footerNavLoggedOut");
+const footerNavLoggedIn = document.getElementById("footerNavLoggedIn");
+
 const userMenu = document.getElementById("userMenu");
 const mobileUserName = document.getElementById("mobileUserName");
+const mobileUserDisplay = document.getElementById("mobileUserDisplay");
 const modalContainer = document.querySelector(".modal-container");
 const loginModal = document.querySelector(".signIn-card");
 const registerModal = document.querySelector(".signUp-card");
 const loginBtn = document.querySelectorAll("#loginBtn");
 const logoutBtn = document.querySelectorAll("#logoutBtn");
-const mobileLoginBtn = document.getElementById("mobileLoginBtn");
 const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 const formClose = document.querySelectorAll("#formClose");
 const switchToRegister = document.getElementById("switchToRegister");
@@ -281,6 +285,12 @@ if (loginFormElement) {
       "mobileUserName"
     ).textContent = `Hi ${user.firstName}`;
 
+    // Update mobile navbar user display
+    if (mobileUserDisplay) {
+      mobileUserDisplay.textContent = `Hi ${user.firstName}`;
+      mobileUserDisplay.style.display = "inline-block";
+    }
+
     // Close modal and update display
     modalContainer.style.display = "none";
     loginFormElement.reset();
@@ -295,13 +305,17 @@ if (loginFormElement) {
     navLinksLoggedOut.style.display = "none";
     navLinksLoggedIn.style.display = "flex";
 
-    // Mobile: hide login button, show logout button
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "none";
-    }
+    // Switch footer nav links
+    if (footerNavLoggedOut) footerNavLoggedOut.style.display = "none";
+    if (footerNavLoggedIn) footerNavLoggedIn.style.display = "block";
+
+    // Mobile: show logout button
     if (mobileLogoutBtn) {
       mobileLogoutBtn.style.display = "block";
     }
+
+    // Dispatch event for footer link update
+    window.dispatchEvent(new Event("userLoggedIn"));
 
     alert(`Welcome back, ${user.firstName}!`);
   });
@@ -323,17 +337,61 @@ logoutBtn.forEach((logout) => {
     navLinksLoggedOut.style.display = "flex";
     navLinksLoggedIn.style.display = "none";
 
-    // Mobile: show login button, hide logout button
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "block";
-    }
+    // Switch footer nav links back to logged out
+    if (footerNavLoggedOut) footerNavLoggedOut.style.display = "block";
+    if (footerNavLoggedIn) footerNavLoggedIn.style.display = "none";
+
+    // Mobile: hide logout button and user display
     if (mobileLogoutBtn) {
       mobileLogoutBtn.style.display = "none";
     }
+    if (mobileUserDisplay) {
+      mobileUserDisplay.style.display = "none";
+    }
+
+    // Dispatch event for footer link update
+    window.dispatchEvent(new Event("userLoggedOut"));
 
     alert("You have been logged out successfully!");
   });
 });
+
+// Mobile Logout Button
+if (mobileLogoutBtn) {
+  mobileLogoutBtn.addEventListener("click", () => {
+    // Clear current user
+    localStorage.removeItem("currentUser");
+
+    // Reset UI
+    loginBtn.forEach((btn) => (btn.style.display = "block"));
+    logoutBtn.forEach((btn) => (btn.style.display = "none"));
+    userMenu.style.display = "none";
+    mobileUserName.style.display = "none";
+
+    // Switch desktop nav links back to logged out
+    navLinksLoggedOut.style.display = "flex";
+    navLinksLoggedIn.style.display = "none";
+
+    // Switch footer nav links back to logged out
+    if (footerNavLoggedOut) footerNavLoggedOut.style.display = "block";
+    if (footerNavLoggedIn) footerNavLoggedIn.style.display = "none";
+
+    // Mobile: hide logout button and user display
+    mobileLogoutBtn.style.display = "none";
+    if (mobileUserDisplay) {
+      mobileUserDisplay.style.display = "none";
+    }
+
+    // Close mobile menu
+    mobileNavLoggedIn.style.display = "none";
+    navBar.style.display = "flex";
+
+    // Dispatch event for footer link update
+    window.dispatchEvent(new Event("userLoggedOut"));
+
+    alert("You have been logged out successfully!");
+  });
+}
 
 // ===== Check if user is already logged in on page load =====
 window.addEventListener("load", () => {
@@ -350,12 +408,17 @@ window.addEventListener("load", () => {
     navLinksLoggedOut.style.display = "none";
     navLinksLoggedIn.style.display = "flex";
 
-    // Mobile: hide login button, show logout button
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "none";
-    }
+    // Switch footer nav links to logged in
+    if (footerNavLoggedOut) footerNavLoggedOut.style.display = "none";
+    if (footerNavLoggedIn) footerNavLoggedIn.style.display = "block";
+
+    // Mobile: show logout button and user display
     if (mobileLogoutBtn) {
       mobileLogoutBtn.style.display = "block";
+    }
+    if (mobileUserDisplay) {
+      mobileUserDisplay.textContent = `Hi ${currentUser.firstName}`;
+      mobileUserDisplay.style.display = "inline-block";
     }
 
     document.getElementById(
@@ -375,12 +438,154 @@ window.addEventListener("load", () => {
     navLinksLoggedOut.style.display = "flex";
     navLinksLoggedIn.style.display = "none";
 
-    // Mobile: show login button, hide logout button
-    if (mobileLoginBtn) {
-      mobileLoginBtn.style.display = "block";
-    }
+    // Switch footer nav links to logged out
+    if (footerNavLoggedOut) footerNavLoggedOut.style.display = "block";
+    if (footerNavLoggedIn) footerNavLoggedIn.style.display = "none";
+
+    // Mobile: hide logout button
     if (mobileLogoutBtn) {
       mobileLogoutBtn.style.display = "none";
     }
   }
+
+  // Update footer marketplace link on page load
+  if (footerMarketplaceLink) {
+    footerMarketplaceLink.href = currentUser ? "marketplace/market.html" : "#";
+  }
 });
+
+// ===== Marketplace Link Protection =====
+// Protect marketplace links for logged-out users
+const marketplaceLinkLoggedOut = document.getElementById(
+  "marketplaceLinkLoggedOut"
+);
+const mobileMarketplaceLinkLoggedOut = document.getElementById(
+  "mobileMarketplaceLinkLoggedOut"
+);
+
+// Desktop marketplace link protection
+if (marketplaceLinkLoggedOut) {
+  marketplaceLinkLoggedOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - show login modal
+      alert("Please log in to access the Marketplace");
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    }
+  });
+}
+
+// Mobile marketplace link protection
+if (mobileMarketplaceLinkLoggedOut) {
+  mobileMarketplaceLinkLoggedOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - show login modal
+      alert("Please log in to access the Marketplace");
+      mobileNavLoggedOut.style.display = "none";
+      navBar.style.display = "flex";
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    }
+  });
+}
+
+// ===== Category Button Protection =====
+// Protect category buttons - only accessible to logged-in users
+const categoryButtons = document.querySelectorAll(".category-btn");
+
+categoryButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - show login modal
+      alert("Please log in to browse categories");
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    } else {
+      // User is logged in - redirect to marketplace with category filter
+      const category = button.getAttribute("data-category");
+      window.location.href = `marketplace/market.html?category=${category}`;
+    }
+  });
+});
+
+// ===== Search Functionality =====
+const navSearchInput = document.getElementById("navSearchInput");
+const navSearchBtn = document.getElementById("navSearchBtn");
+
+// Handle search button click
+if (navSearchBtn) {
+  navSearchBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    handleSearch();
+  });
+}
+
+// Handle Enter key press in search input
+if (navSearchInput) {
+  navSearchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
+  });
+}
+
+function handleSearch() {
+  const searchQuery = navSearchInput.value.trim();
+
+  if (!searchQuery) {
+    alert("Please enter a crop name to search");
+    return;
+  }
+
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  if (!currentUser) {
+    // User not logged in - show login modal
+    alert("Please log in to search for crops");
+    modalContainer.style.display = "flex";
+    loginModal.style.display = "flex";
+    registerModal.style.display = "none";
+  } else {
+    // User is logged in - redirect to marketplace with search query
+    // Store search query in localStorage for marketplace to use
+    localStorage.setItem("searchQuery", searchQuery);
+    window.location.href = "marketplace/market.html";
+  }
+}
+
+// ===== Footer Marketplace Link Protection (for logged-out users) =====
+const footerMarketplaceLinkLoggedOut = document.getElementById(
+  "footerMarketplaceLinkLoggedOut"
+);
+
+if (footerMarketplaceLinkLoggedOut) {
+  // Add click handler for protection
+  footerMarketplaceLinkLoggedOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - show login modal
+      alert("Please log in to access the Marketplace");
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    } else {
+      // User is logged in - redirect to marketplace
+      window.location.href = "marketplace/market.html";
+    }
+  });
+}

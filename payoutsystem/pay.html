@@ -3,185 +3,383 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checkout - Crop8Hub</title>
+    <title>Checkout - Payment System</title>
     <link rel="stylesheet" href="pay.css" />
-
-    <!-- Google Fonts for Poppins font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
-    <!-- HEADER: Navigation bar at top (Guideline: Required) -->
-    <header class="header">
-      <div class="header-container">
-        <!-- Back button - simple round green button -->
-        <button class="back-btn" aria-label="Go back">←</button>
-
-        <!-- Page title -->
-        <h1 class="page-title">Checkout</h1>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <button class="back-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h1>Checkout</h1>
       </div>
-    </header>
 
-    <!-- MAIN CONTENT: Contains payment form and order summary -->
-    <main class="checkout-container">
-      <!-- LEFT SIDE: Payment Details -->
-      <section class="payment-section">
-        <!-- Delivery Location Box -->
-        <article class="form-group">
-          <div class="form-header">
-            <h2 class="section-title">Delivery location</h2>
-            <button class="change-btn" type="button">Change</button>
-          </div>
-          <div class="input-wrapper">
-            <input
-              type="text"
-              id="delivery-address"
-              class="form-input"
-              placeholder="Enter your delivery address"
-            />
-          </div>
-        </article>
-
-        <!-- Phone Number Box -->
-        <article class="form-group">
-          <h2 class="section-title">Phone</h2>
-          <div class="input-wrapper">
-            <input
-              type="tel"
-              id="phone-number"
-              class="form-input"
-              placeholder="Enter your phone number"
-            />
-          </div>
-        </article>
-
-        <!-- Payment Options Box -->
-        <article class="form-group">
-          <h2 class="section-title">Payment options</h2>
-
-          <div class="payment-options">
-            <!-- Option 1: Debit Card -->
-            <label class="payment-option">
+      <div class="checkout-grid">
+        <!-- Left Column - Delivery & Payment -->
+        <div class="left-column">
+          <!-- Delivery Location -->
+          <div class="section">
+            <div class="section-header">
+              <h2>Delivery location</h2>
+              <button class="change-button">Change</button>
+            </div>
+            <div class="info-box">
               <input
-                type="radio"
-                name="payment-method"
-                value="debit-card"
-                class="payment-radio"
+                type="text"
+                id="address"
+                placeholder="Enter your delivery address"
+                
               />
-              <span class="payment-label">Debit Card</span>
-            </label>
+            </div>
+          </div>
 
-            <!-- Option 2: Bank Transfer -->
-            <label class="payment-option">
+          <!-- Phone -->
+          <div class="section">
+            <h2>Phone</h2>
+            <div class="info-box">
               <input
-                type="radio"
-                name="payment-method"
-                value="bank-transfer"
-                class="payment-radio"
+                type="tel"
+                id="phone"
+                placeholder="enter your phone number"
+                
               />
-              <span class="payment-label">Bank Transfer</span>
-            </label>
-
-            <!-- Option 3: Pay on Delivery -->
-            <label class="payment-option">
-              <input
-                type="radio"
-                name="payment-method"
-                value="pay-on-delivery"
-                class="payment-radio"
-              />
-              <span class="payment-label">Pay on Delivery</span>
-            </label>
-          </div>
-
-          <!-- Secure Payment Notice -->
-          <div class="secure-notice">
-            <span class="shield-icon">🛡️</span>
-            <div>
-              <strong class="secure-title">Secure Payment</strong>
-              <p class="secure-text">
-                All transactions are encrypted and secure. Your financial data
-                is protected.
-              </p>
             </div>
           </div>
-        </article>
-        <!-- Continue Shopping Link -->
-        <a href="#" class="continue-link">← Continue shopping</a>
-      </section>
 
-      <!-- RIGHT SIDE: Order Summary -->
-      <aside class="order-summary">
-        <h2 class="summary-title">Order Summary</h2>
+          <!-- Delivery & Payment -->
+          <div class="section">
+            <h2>Delivery & Payment</h2>
 
-        <!-- Order Items List -->
-        <ul class="order-items">
-          <!-- Product 1: Soybean -->
-          <li class="order-item">
-            <img
-              src="../marketplace/marketplaceimages/soybean.jpg"
-              alt="Soybean"
-              class="product-image"
-            />
-            <div class="product-details">
-              <h3 class="product-name">Soybean</h3>
-              <p class="product-description">
-                Our premium soybean seeds feature the Atwood variety, known for
-                its high productivity.
-              </p>
-            </div>
-            <div class="product-price-wrapper">
-              <button class="delete-btn" aria-label="Remove item">🗑️</button>
-              <span class="product-price">$12.00</span>
-            </div>
-          </li>
+            <!-- Payment option -->
+            <div class="subsection">
+              <h3>Payment option</h3>
+              <div class="payment-options">
+                <div class="payment-option" data-method="card">
+                  <input
+                    type="radio"
+                    id="card"
+                    name="payment"
+                    value="card"
+                    checked
+                  />
+                  <label for="card">
+                    <span class="radio-custom"></span>
+                    Debit Card
+                  </label>
+                </div>
 
-          <!-- Product 2: Sorghum -->
-          <li class="order-item">
-            <img
-              src="../marketplace/marketplaceimages/sorghum.jpg"
-              alt="Sorghum"
-              class="product-image"
-            />
-            <div class="product-details">
-              <h3 class="product-name">Sorghum</h3>
-              <p class="product-description">
-                Our premium sorghum seeds feature the Atwood variety, known for
-                its high productivity.
-              </p>
-            </div>
-            <div class="product-price-wrapper">
-              <button class="delete-btn" aria-label="Remove item">🗑️</button>
-              <span class="product-price">$12.00</span>
-            </div>
-          </li>
-        </ul>
+                <div class="payment-option" data-method="cod">
+                  <input type="radio" id="cod" name="payment" value="cod" />
+                  <label for="cod">
+                    <span class="radio-custom"></span>
+                    Pay on Delivery
+                  </label>
+                </div>
 
-        <!-- Price Breakdown -->
-        <div class="price-breakdown">
-          <div class="price-row">
-            <span class="price-label">Subtotal (2 items)</span>
-            <span class="price-value">$19.00</span>
-          </div>
-          <div class="price-row">
-            <span class="price-label">Delivery fee</span>
-            <span class="price-value">$5.00</span>
-          </div>
-          <div class="price-row">
-            <span class="price-label">Tax</span>
-            <span class="price-value">$0.50</span>
+                <div class="payment-option" data-method="bank">
+                  <input type="radio" id="bank" name="payment" value="bank" />
+                  <label for="bank">
+                    <span class="radio-custom"></span>
+                    Bank Transfer
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secure Payment Info -->
+            <div class="secure-payment">
+              <div class="secure-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div class="secure-text">
+                <strong>Secure Payment</strong>
+                <p>
+                  Your payment information is encrypted and secured. We never
+                  store your card details.
+                </p>
+              </div>
+              <div class="encryption-icons">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <span>SSL ENCRYPTED</span>
+              </div>
+            </div>
           </div>
         </div>
+        <!-- End Left Column -->
 
-        <!-- Total -->
-        <div class="total-section">
-          <span class="total-label">Total</span>
-          <span class="total-amount">$24.50</span>
+        <!-- Right Column - Order Summary -->
+        <div class="right-column">
+          <div class="order-summary-card">
+            <h2>Order Summary</h2>
+
+            <!-- Product Items -->
+            <div class="product-items" id="productItemsContainer">
+              <!-- Products will be loaded dynamically by JavaScript -->
+            </div>
+
+            <!-- Price Summary -->
+            <div class="price-summary">
+              <div class="summary-row">
+                <span>Subtotal (<span id="itemCount">0</span> items)</span>
+                <span id="subtotalAmount">₦0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Delivery fee</span>
+                <span id="deliveryFee">₦1,000.00</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total</span>
+                <span class="total-price" id="totalAmount">₦1,000.00</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </aside>
-    </main>
+      </div>
+    </div>
+
+    <!-- Card Payment Modal -->
+    <div id="cardModal" class="payment-modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-handle"></div>
+        <div class="modal-header">
+          <h2>Payment</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="card-logos">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect fill='%231A1F71' width='50' height='30' rx='4'/%3E%3Ctext x='10' y='20' fill='white' font-family='Arial' font-weight='bold' font-size='12'%3EVISA%3C/text%3E%3C/svg%3E"
+              alt="Visa"
+            />
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect fill='white' width='50' height='30' rx='4'/%3E%3Ccircle cx='18' cy='15' r='8' fill='%23EB001B'/%3E%3Ccircle cx='28' cy='15' r='8' fill='%23F79E1B'/%3E%3C/svg%3E"
+              alt="Mastercard"
+            />
+          </div>
+
+          <p class="modal-subtitle">Add credit card details</p>
+
+          <form id="cardPaymentForm">
+            <div class="form-row-modal">
+              <div class="form-group-modal">
+                <label>Card Number</label>
+                <input
+                  type="text"
+                  id="cardNumber"
+                  placeholder="3324 3445 3423 2556"
+                  maxlength="19"
+                />
+              </div>
+              <div class="form-group-modal">
+                <label>Card Holder</label>
+                <input
+                  type="text"
+                  id="cardHolder"
+                  placeholder="Johnny English"
+                />
+              </div>
+            </div>
+
+            <div class="form-row-modal">
+              <div class="form-group-modal">
+                <label>Expiration Date</label>
+                <input
+                  type="text"
+                  id="cardExpiry"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                />
+              </div>
+              <div class="form-group-modal">
+                <label>CVV</label>
+                <input
+                  type="password"
+                  id="cardCvv"
+                  placeholder="•••"
+                  maxlength="3"
+                />
+              </div>
+            </div>
+
+            <div class="form-group-modal full-width">
+              <label>Enter Card Pin</label>
+              <input
+                type="password"
+                id="cardPin"
+                placeholder="••••"
+                maxlength="4"
+              />
+            </div>
+
+            <button type="button" id="proceedPayment" class="btn-proceed">
+              Proceed
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pay on Delivery Modal -->
+    <div id="codModal" class="payment-modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-handle"></div>
+        <div class="modal-header">
+          <h2>Pay on Delivery</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="modal-subtitle">Enter delivery information</p>
+
+          <form id="codPaymentForm">
+            <div class="form-group-modal full-width">
+              <label>Full Name</label>
+              <input
+                type="text"
+                id="codName"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div class="form-group-modal full-width">
+              <label>Phone Number</label>
+              <input type="tel" id="codPhone" placeholder="+234 801 234 5678" />
+            </div>
+
+            <div class="form-group-modal full-width">
+              <label>Delivery Address</label>
+              <textarea
+                id="codAddress"
+                rows="3"
+                placeholder="Enter complete delivery address"
+              ></textarea>
+            </div>
+
+            <div class="form-group-modal full-width">
+              <label>Additional Notes (Optional)</label>
+              <textarea
+                id="codNotes"
+                rows="2"
+                placeholder="Any special delivery instructions"
+              ></textarea>
+            </div>
+
+            <div class="alert-info">
+              <svg
+                class="alert-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p>Please keep the exact amount ready for payment on delivery.</p>
+            </div>
+
+            <button type="button" id="proceedCOD" class="btn-proceed">
+              Place Order
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank Transfer Modal -->
+    <div id="bankModal" class="payment-modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-handle"></div>
+        <div class="modal-header">
+          <h2>Bank Transfer</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="modal-subtitle">Transfer to the following account</p>
+
+          <div class="bank-details-card">
+            <div class="bank-detail-row">
+              <span class="detail-label">Bank Name:</span>
+              <span class="detail-value">GTBank (Guaranty Trust Bank)</span>
+            </div>
+            <div class="bank-detail-row">
+              <span class="detail-label">Account Name:</span>
+              <span class="detail-value">Your Business Name Ltd</span>
+            </div>
+            <div class="bank-detail-row">
+              <span class="detail-label">Account Number:</span>
+              <span class="detail-value">0123456789</span>
+            </div>
+            <div class="bank-detail-row">
+              <span class="detail-label">Bank Code:</span>
+              <span class="detail-value">058</span>
+            </div>
+            <div class="bank-detail-row highlight">
+              <span class="detail-label">Amount to Transfer:</span>
+              <span class="detail-value amount">₦24,500.00</span>
+            </div>
+          </div>
+
+          <form id="bankPaymentForm">
+            <div class="form-group-modal full-width">
+              <label>Your Name</label>
+              <input type="text" id="bankName" placeholder="Enter your name" />
+            </div>
+
+            <div class="form-group-modal full-width">
+              <label>Transaction Reference Number</label>
+              <input
+                type="text"
+                id="bankReference"
+                placeholder="Enter transaction reference number"
+              />
+            </div>
+
+            <div class="alert-info">
+              <svg
+                class="alert-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p>
+                Please transfer the exact amount and save your transaction
+                receipt. Your order will be processed after payment
+                verification.
+              </p>
+            </div>
+
+            <button type="button" id="proceedBank" class="btn-proceed">
+              Confirm Transfer
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="pay.js"></script>
   </body>
 </html>

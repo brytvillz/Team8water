@@ -1,588 +1,563 @@
-// ===================================
-// GLOBAL VARIABLES & DOM ELEMENTS
-// ===================================
+// Payment System Logic
 
-// Get all DOM elements we need to manipulate
-const deliveryInput = document.querySelector(".delivery-input");
-const phoneInput = document.querySelector(".phone-input");
-const paymentOptions = document.querySelectorAll('input[name="payment"]');
-const backBtn = document.querySelector(".back-btn");
-const changeButtons = document.querySelectorAll(".change-btn");
-
-// Cart data - Using OBJECTS to store product information
-const cart = [
-  {
-    id: 1,
-    name: "Soybean",
-    quantity: 2,
-    price: 12.0,
-    image: "https://via.placeholder.com/64/8B4513/FFFFFF?text=Soybean",
-  },
-  {
-    id: 2,
-    name: "Sorghum",
-    quantity: 1,
-    price: 12.0,
-    image: "https://via.placeholder.com/64/DAA520/FFFFFF?text=Sorghum",
-  },
-];
-
-// Pricing configuration - OBJECT
-const pricing = {
-  deliveryFee: 0.0,
-  taxRate: 0.08, // 8% tax
-};
-
-// ===================================
-// EVENT LISTENERS - Handling User Interactions
-// ===================================
-
-// Wait for DOM to fully load before running code
-document.addEventListener("DOMContentLoaded", function () {
-  // Initialize the page
-  renderCart();
-  calculatePrices();
-
-  // Back button click - Navigate to previous page
-  backBtn.addEventListener("click", handleBackButton);
-
-  // Payment option selection - Using LOOP to add event to each radio button
-  paymentOptions.forEach(function (option) {
-    option.addEventListener("change", handlePaymentSelection);
-  });
-
-  // Change buttons - Using LOOP
-  changeButtons.forEach(function (btn) {
-    btn.addEventListener("click", handleChangeButton);
-  });
-
-  // Input validation on typing
-  deliveryInput.addEventListener("input", validateDeliveryInput);
-  phoneInput.addEventListener("input", validatePhoneInput);
+// Load order data from localStorage on page load
+window.addEventListener("DOMContentLoaded", () => {
+  loadOrderSummary();
 });
 
-// ===================================
-// FUNCTIONS - Reusable Code Blocks
-// ===================================
+function loadOrderSummary() {
+  const orderData = JSON.parse(localStorage.getItem("currentOrder"));
 
-// FUNCTION 1: Handle back button click
-function handleBackButton() {
-  // CONDITIONAL - Check if user has entered data
-  if (deliveryInput.value || phoneInput.value) {
-    const confirmLeave = confirm(
-      "You have unsaved changes. Are you sure you want to leave?"
-    );
-    if (confirmLeave) {
-      window.history.back(); // Go to previous page
-    }
-  } else {
-    window.history.back();
-  }
-}
-
-// FUNCTION 2: Handle payment option selection
-function handlePaymentSelection(event) {
-  const selectedPayment = event.target.value;
-
-  console.log(`Payment method selected: ${selectedPayment}`);
-
-  // CONDITIONAL - Different actions based on payment type
-  if (selectedPayment === "debit-card") {
-    alert("Debit Card payment selected. Card form will open here.");
-  } else if (selectedPayment === "bank-transfer") {
-    alert("Bank Transfer selected. Account details will show here.");
-  } else if (selectedPayment === "pay-on-delivery") {
-    alert("Pay on Delivery selected. No payment needed now!");
-  }
-}
-
-// FUNCTION 3: Handle change button clicks
-function handleChangeButton(event) {
-  const buttonText = event.target.textContent;
-  alert(`You clicked: ${buttonText}. Edit functionality will be added here.`);
-}
-
-// ===================================
-// RENDER CART - Display Products Dynamically
-// ===================================
-
-// FUNCTION 4: Render cart items to the page
-function renderCart() {
-  const productItemsContainer = document.querySelector(".product-items");
-
-  // Clear existing content
-  productItemsContainer.innerHTML = "";
-
-  // LOOP through cart array and create HTML for each product
-  cart.forEach(function (product) {
-    // Create product item HTML - DOM Manipulation
-    const productHTML = `
-      <article class="product-item">
-        <img src="${product.image}" alt="${product.name}" class="product-image">
-        <div class="product-details">
-          <h4 class="product-name">${product.name}</h4>
-          <p class="product-quantity">Qty: ${product.quantity}</p>
-        </div>
-        <span class="product-price">$${product.price.toFixed(2)}</span>
-      </article>
+  if (!orderData || !orderData.items || orderData.items.length === 0) {
+    // No order data found - show empty state
+    document.getElementById("productItemsContainer").innerHTML = `
+      <div style="text-align: center; padding: 2rem; color: #666;">
+        <p>No items in your order</p>
+        <a href="../marketplace/market.html" style="color: #667e06; text-decoration: none;">
+          Return to Marketplace
+        </a>
+      </div>
     `;
+    return;
+  }
 
-    // Add to container - DOM Manipulation
-    productItemsContainer.innerHTML += productHTML;
+  // Display products
+  const container = document.getElementById("productItemsContainer");
+  container.innerHTML = "";
+
+  orderData.items.forEach((item, index) => {
+    const productHTML = `
+      <div class="product-item" data-index="${index}">
+        <img
+          src="${item.image}"
+          alt="${item.name}"
+          class="product-image"
+          onerror="this.src='https://via.placeholder.com/200x200?text=${
+            item.name
+          }'"
+        />
+        <div class="product-details">
+          <h3>${
+            item.name
+          } <span style="font-size: 0.9rem; font-weight: normal;">(x${
+      item.quantity
+    })</span></h3>
+          <p class="product-description">
+            ${item.description}
+          </p>
+        </div>
+        <div class="product-actions">
+          <button class="delete-btn" onclick="removeItem(${index})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"
+              />
+            </svg>
+          </button>
+          <span class="product-price">₦${item.total.toLocaleString()}.00</span>
+        </div>
+      </div>
+    `;
+    container.innerHTML += productHTML;
   });
 
-  console.log(`Rendered ${cart.length} products to cart`);
+  // Update price summary
+  const subtotal = orderData.subtotal;
+  const deliveryFee = orderData.deliveryFee || 1000;
+  const total = subtotal + deliveryFee;
+
+  document.getElementById("itemCount").textContent = orderData.items.length;
+  document.getElementById(
+    "subtotalAmount"
+  ).textContent = `₦${subtotal.toLocaleString()}.00`;
+  document.getElementById(
+    "deliveryFee"
+  ).textContent = `₦${deliveryFee.toLocaleString()}.00`;
+  document.getElementById(
+    "totalAmount"
+  ).textContent = `₦${total.toLocaleString()}.00`;
 }
 
-// ===================================
-// CALCULATE PRICES - Math & Logic
-// ===================================
+function removeItem(index) {
+  const orderData = JSON.parse(localStorage.getItem("currentOrder"));
 
-// FUNCTION 5: Calculate subtotal from cart
-function calculateSubtotal() {
-  let subtotal = 0;
+  if (!orderData || !orderData.items) return;
 
-  // LOOP through cart and add up prices
-  for (let i = 0; i < cart.length; i++) {
-    const itemTotal = cart[i].price * cart[i].quantity;
-    subtotal += itemTotal;
-  }
+  // Remove item
+  orderData.items.splice(index, 1);
 
-  return subtotal;
-}
-
-// FUNCTION 6: Calculate tax amount
-function calculateTax(subtotal) {
-  return subtotal * pricing.taxRate;
-}
-
-// FUNCTION 7: Calculate grand total
-function calculateTotal(subtotal, deliveryFee, tax) {
-  return subtotal + deliveryFee + tax;
-}
-
-// FUNCTION 8: Update price display on page
-function calculatePrices() {
-  // Calculate all values
-  const subtotal = calculateSubtotal();
-  const tax = calculateTax(subtotal);
-  const total = calculateTotal(subtotal, pricing.deliveryFee, tax);
-
-  // Get DOM elements for price display
-  const subtotalElement = document.querySelector(
-    ".price-row:nth-child(1) .price-value"
+  // Recalculate subtotal
+  orderData.subtotal = orderData.items.reduce(
+    (sum, item) => sum + item.total,
+    0
   );
-  const deliveryElement = document.querySelector(
-    ".price-row:nth-child(2) .price-value"
-  );
-  const taxElement = document.querySelector(
-    ".price-row:nth-child(3) .price-value"
-  );
-  const totalElement = document.querySelector(".price-row.total .price-value");
 
-  // Update DOM with calculated values - DOM Manipulation
-  subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-  deliveryElement.textContent = `$${pricing.deliveryFee.toFixed(2)}`;
-  taxElement.textContent = `$${tax.toFixed(2)}`;
-  totalElement.textContent = `$${total.toFixed(2)}`;
+  // Save updated order
+  localStorage.setItem("currentOrder", JSON.stringify(orderData));
 
-  console.log(`Prices calculated - Total: $${total.toFixed(2)}`);
-}
+  // Reload display
+  loadOrderSummary();
 
-// ===================================
-// INPUT VALIDATION - Real-time Feedback
-// ===================================
-
-// FUNCTION 9: Validate delivery location input
-function validateDeliveryInput(event) {
-  const input = event.target;
-  const value = input.value.trim();
-
-  // CONDITIONAL - Check if input is valid
-  if (value.length === 0) {
-    setInputError(input, "");
-  } else if (value.length < 5) {
-    setInputError(input, "Address must be at least 5 characters");
-  } else {
-    setInputSuccess(input);
+  // If no items left, redirect to marketplace
+  if (orderData.items.length === 0) {
+    setTimeout(() => {
+      alert("Your cart is empty. Redirecting to marketplace...");
+      window.location.href = "../marketplace/market.html";
+    }, 500);
   }
 }
 
-// FUNCTION 10: Validate phone number input
-function validatePhoneInput(event) {
-  const input = event.target;
-  const value = input.value.trim();
-
-  // Remove non-numeric characters for validation
-  const numbersOnly = value.replace(/\D/g, "");
-
-  // CONDITIONAL - Check phone number length
-  if (value.length === 0) {
-    setInputError(input, "");
-  } else if (numbersOnly.length < 10) {
-    setInputError(input, "Phone number must be at least 10 digits");
-  } else if (numbersOnly.length > 15) {
-    setInputError(input, "Phone number is too long");
-  } else {
-    setInputSuccess(input);
-  }
-}
-
-// FUNCTION 11: Show error state on input
-function setInputError(input, message) {
-  input.style.borderColor = "#ff6b35"; // Orange border
-  input.style.backgroundColor = "#fff5f0"; // Light orange background
-
-  // Check if error message already exists
-  let errorMsg = input.parentElement.querySelector(".error-message");
-
-  if (message) {
-    if (!errorMsg) {
-      // Create error message element - DOM Manipulation
-      errorMsg = document.createElement("span");
-      errorMsg.className = "error-message";
-      errorMsg.style.color = "#ff6b35";
-      errorMsg.style.fontSize = "0.875rem";
-      errorMsg.style.marginTop = "0.5rem";
-      errorMsg.style.display = "block";
-      input.parentElement.appendChild(errorMsg);
-    }
-    errorMsg.textContent = message;
-  } else if (errorMsg) {
-    errorMsg.remove(); // Remove error message if input is empty
-  }
-}
-
-// FUNCTION 12: Show success state on input
-function setInputSuccess(input) {
-  input.style.borderColor = "#6b8e23"; // Green border
-  input.style.backgroundColor = "#ffffff"; // White background
-
-  // Remove error message if exists
-  const errorMsg = input.parentElement.querySelector(".error-message");
-  if (errorMsg) {
-    errorMsg.remove();
-  }
-}
-
-// FUNCTION 13: Validate all inputs before checkout
-function validateAllInputs() {
-  const deliveryValue = deliveryInput.value.trim();
-  const phoneValue = phoneInput.value.trim();
-
-  // Array to store validation errors
-  const errors = [];
-
-  // CONDITIONAL - Check each field
-  if (deliveryValue.length < 5) {
-    errors.push("Please enter a valid delivery address");
+class PaymentSystem {
+  constructor() {
+    this.selectedMethod = "card";
+    this.cart = [
+      { id: 1, name: "Rice", price: 12000.0, qty: 1, type: "18kg" },
+      { id: 2, name: "Sorghum", price: 22000.0, qty: 1, type: "1/2bag" },
+    ];
+    this.init();
   }
 
-  const phoneNumbers = phoneValue.replace(/\D/g, "");
-  if (phoneNumbers.length < 10) {
-    errors.push("Please enter a valid phone number");
+  init() {
+    this.setupEventListeners();
+    this.updateCart();
+    this.setupCardFormatting();
   }
 
-  // Check if payment method is selected
-  const selectedPayment = document.querySelector(
-    'input[name="payment"]:checked'
-  );
-  if (!selectedPayment) {
-    errors.push("Please select a payment method");
-  }
-
-  // CONDITIONAL - Return validation result
-  if (errors.length > 0) {
-    // LOOP through errors and display them
-    let errorMessage = "Please fix the following errors:\n\n";
-    errors.forEach(function (error, index) {
-      errorMessage += `${index + 1}. ${error}\n`;
+  setupEventListeners() {
+    // Payment method selection
+    const paymentOptions = document.querySelectorAll('input[name="payment"]');
+    paymentOptions.forEach((option) => {
+      option.addEventListener("change", (e) =>
+        this.handlePaymentMethodChange(e)
+      );
     });
-    alert(errorMessage);
-    return false;
+
+    // Delete buttons
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => this.handleDelete(e));
+    });
+
+    // Back button
+    const backBtn = document.querySelector(".back-button");
+    if (backBtn) {
+      backBtn.addEventListener("click", () => {
+        window.history.back();
+      });
+    }
+
+    // Modal close button
+    const modalClose = document.querySelector(".modal-close");
+    if (modalClose) {
+      modalClose.addEventListener("click", () => this.closeCardModal());
+    }
+
+    // Modal overlay click to close
+    const modalOverlay = document.querySelector(".modal-overlay");
+    if (modalOverlay) {
+      modalOverlay.addEventListener("click", () => this.closeCardModal());
+    }
+
+    // Close buttons for all modals
+    document.querySelectorAll(".modal-close").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const modal = e.target.closest(".payment-modal");
+        this.closeModal(modal);
+      });
+    });
+
+    // Close on overlay click for all modals
+    document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+      overlay.addEventListener("click", (e) => {
+        const modal = e.target.closest(".payment-modal");
+        this.closeModal(modal);
+      });
+    });
+
+    // Proceed button in modal
+    const proceedBtn = document.getElementById("proceedPayment");
+    if (proceedBtn) {
+      proceedBtn.addEventListener("click", () => this.processCardPayment());
+    }
+
+    // COD proceed button
+    const proceedCODBtn = document.getElementById("proceedCOD");
+    if (proceedCODBtn) {
+      proceedCODBtn.addEventListener("click", () => this.processCODPayment());
+    }
+
+    // Bank proceed button
+    const proceedBankBtn = document.getElementById("proceedBank");
+    if (proceedBankBtn) {
+      proceedBankBtn.addEventListener("click", () => this.processBankPayment());
+    }
   }
 
-  return true;
-}
+  handlePaymentMethodChange(e) {
+    this.selectedMethod = e.target.value;
+    console.log("Payment method selected:", this.selectedMethod);
 
-// ===================================
-// CONSOLE SUMMARY - Display What We Built
-// ===================================
+    // Open the appropriate modal based on selection
+    if (this.selectedMethod === "card") {
+      this.openCardModal();
+    } else if (this.selectedMethod === "cod") {
+      this.openCODModal();
+    } else if (this.selectedMethod === "bank") {
+      this.openBankModal();
+    }
+  }
 
-// FUNCTION 14: Log summary to console
-function logProjectSummary() {
-  console.clear(); // Clear console for clean display
+  handleDelete(e) {
+    const productItem = e.target.closest(".product-item");
+    if (productItem) {
+      productItem.remove();
+      this.updateCart();
+    }
+  }
 
-  console.log(
-    "%c🌾 CROP8HUB - CHECKOUT PAGE 🌾",
-    "color: #6b8e23; font-size: 20px; font-weight: bold;"
-  );
-  console.log("%c========================================", "color: #6b8e23;");
+  openCardModal() {
+    const modal = document.getElementById("cardModal");
+    if (modal) {
+      // Add active class with slight delay for smooth animation
+      requestAnimationFrame(() => {
+        modal.classList.add("active");
+      });
+      document.body.style.overflow = "hidden";
+    }
+  }
 
-  console.log("\n📋 JAVASCRIPT SKILLS DEMONSTRATED:\n");
+  closeCardModal() {
+    const modal = document.getElementById("cardModal");
+    if (modal) {
+      modal.classList.remove("active");
 
-  // Array of skills we demonstrated
-  const skills = [
-    "✅ DOM Manipulation (querySelector, innerHTML, createElement)",
-    "✅ Functions (13 reusable functions created)",
-    "✅ Arrays (cart array with product objects)",
-    "✅ Objects (product objects, pricing object)",
-    "✅ Events (click, change, input listeners)",
-    "✅ Conditionals (if/else statements for validation)",
-    "✅ Loops (forEach, for loop for calculations)",
-  ];
+      // Wait for animation to complete before allowing scroll
+      setTimeout(() => {
+        document.body.style.overflow = "";
+      }, 600);
 
-  // LOOP through skills array and log each one
-  skills.forEach(function (skill) {
-    console.log(`  ${skill}`);
-  });
+      // Uncheck the card radio button if user closes without proceeding
+      const cardRadio = document.getElementById("card");
+      if (cardRadio) {
+        cardRadio.checked = false;
+      }
+    }
+  }
 
-  console.log("\n🛒 CART CONTENTS:\n");
+  openCODModal() {
+    const modal = document.getElementById("codModal");
+    if (modal) {
+      requestAnimationFrame(() => {
+        modal.classList.add("active");
+      });
+      document.body.style.overflow = "hidden";
+    }
+  }
 
-  // LOOP through cart and display each product
-  cart.forEach(function (product, index) {
-    console.log(`  ${index + 1}. ${product.name}`);
-    console.log(`     Quantity: ${product.quantity}`);
-    console.log(`     Price: $${product.price.toFixed(2)}`);
-    console.log(
-      `     Subtotal: $${(product.price * product.quantity).toFixed(2)}\n`
+  openBankModal() {
+    const modal = document.getElementById("bankModal");
+    if (modal) {
+      requestAnimationFrame(() => {
+        modal.classList.add("active");
+      });
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  closeModal(modal) {
+    if (modal) {
+      modal.classList.remove("active");
+
+      setTimeout(() => {
+        document.body.style.overflow = "";
+      }, 600);
+
+      // Uncheck all radio buttons
+      document.querySelectorAll('input[name="payment"]').forEach((radio) => {
+        radio.checked = false;
+      });
+    }
+  }
+  setupCardFormatting() {
+    // Format card number
+    const cardNumber = document.getElementById("cardNumber");
+    if (cardNumber) {
+      cardNumber.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\s/g, "");
+        let formattedValue = value.match(/.{1,4}/g)?.join(" ") || value;
+        e.target.value = formattedValue;
+      });
+    }
+
+    // Format expiry date
+    const cardExpiry = document.getElementById("cardExpiry");
+    if (cardExpiry) {
+      cardExpiry.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) {
+          value = value.substring(0, 2) + "/" + value.substring(2, 4);
+        }
+        e.target.value = value;
+      });
+    }
+
+    // Format CVV (numbers only)
+    const cardCvv = document.getElementById("cardCvv");
+    if (cardCvv) {
+      cardCvv.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "");
+      });
+    }
+
+    // Format PIN (numbers only)
+    const cardPin = document.getElementById("cardPin");
+    if (cardPin) {
+      cardPin.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "");
+      });
+    }
+  }
+
+  // Function to save order to localStorage
+  saveOrder(paymentMethod, customerInfo = {}) {
+    const currentOrder = JSON.parse(
+      localStorage.getItem("currentOrder") || "{}"
     );
-  });
 
-  // Display pricing summary
-  const subtotal = calculateSubtotal();
-  const tax = calculateTax(subtotal);
-  const total = calculateTotal(subtotal, pricing.deliveryFee, tax);
+    // Generate order ID
+    const orderId = `ORD${Date.now()}${Math.floor(Math.random() * 10000)}`;
 
-  console.log("💰 PRICE SUMMARY:\n");
-  console.log(`  Subtotal: $${subtotal.toFixed(2)}`);
-  console.log(`  Delivery: $${pricing.deliveryFee.toFixed(2)}`);
-  console.log(`  Tax (8%): $${tax.toFixed(2)}`);
-  console.log(`  ${"-".repeat(30)}`);
-  console.log(
-    `  %cTOTAL: $${total.toFixed(2)}`,
-    "color: #6b8e23; font-weight: bold; font-size: 16px;"
-  );
-
-  console.log("\n🎨 PAGE FEATURES:\n");
-  console.log("  ✓ Responsive design (Mobile, Tablet, Desktop)");
-  console.log("  ✓ Real-time input validation");
-  console.log("  ✓ Dynamic cart rendering");
-  console.log("  ✓ Automatic price calculations");
-  console.log("  ✓ Payment method selection");
-  console.log("  ✓ Semantic HTML structure");
-  console.log("  ✓ CSS variables & relative units");
-
-  console.log("\n📱 TRY THESE INTERACTIONS:\n");
-  console.log("  1. Type in delivery address (try less than 5 characters)");
-  console.log("  2. Enter phone number (watch validation)");
-  console.log("  3. Select a payment method");
-  console.log("  4. Click the back button");
-  console.log("  5. Resize browser to see responsive design");
-
-  console.log(
-    "\n%c========================================",
-    "color: #6b8e23;"
-  );
-  console.log(
-    "%c🚀 Checkout page ready! Happy coding! 🚀",
-    "color: #6b8e23; font-weight: bold;"
-  );
-  console.log(
-    "%c========================================\n",
-    "color: #6b8e23;"
-  );
-}
-
-// Call the summary function when page loads
-document.addEventListener("DOMContentLoaded", function () {
-  // Small delay to ensure everything is loaded
-  setTimeout(logProjectSummary, 500);
-});
-
-// ===================================
-// UTILITY FUNCTIONS - Helper Functions
-// ===================================
-
-// FUNCTION 15: Format currency
-function formatCurrency(amount) {
-  return `$${amount.toFixed(2)}`;
-}
-
-// FUNCTION 16: Get selected payment method
-function getSelectedPaymentMethod() {
-  const selected = document.querySelector('input[name="payment"]:checked');
-  return selected ? selected.value : null;
-}
-
-// FUNCTION 17: Check if form is complete
-function isFormComplete() {
-  const hasDelivery = deliveryInput.value.trim().length >= 5;
-  const hasPhone = phoneInput.value.replace(/\D/g, "").length >= 10;
-  const hasPayment = getSelectedPaymentMethod() !== null;
-
-  return hasDelivery && hasPhone && hasPayment;
-}
-
-// ===================================
-// EXPOSE FUNCTIONS FOR TESTING (Optional)
-// ===================================
-
-// Make functions available in console for testing
-window.checkoutApp = {
-  cart: cart,
-  validateForm: validateAllInputs,
-  calculateTotal: function () {
-    const subtotal = calculateSubtotal();
-    const tax = calculateTax(subtotal);
-    return calculateTotal(subtotal, pricing.deliveryFee, tax);
-  },
-  isComplete: isFormComplete,
-  summary: logProjectSummary,
-};
-
-console.log(
-  "%cℹ️ Test functions available: window.checkoutApp",
-  "color: #666; font-style: italic;"
-);
-
-// ===================================
-// CONSOLE SUMMARY - Display What We Built
-// ===================================
-
-// FUNCTION 14: Log summary to console
-function logProjectSummary() {
-  console.clear(); // Clear console for clean display
-
-  console.log(
-    "%c🌾 CROP8HUB - CHECKOUT PAGE 🌾",
-    "color: #6b8e23; font-size: 20px; font-weight: bold;"
-  );
-  console.log("%c========================================", "color: #6b8e23;");
-
-  console.log("\n📋 JAVASCRIPT SKILLS DEMONSTRATED:\n");
-
-  // Array of skills we demonstrated
-  const skills = [
-    "✅ DOM Manipulation (querySelector, innerHTML, createElement)",
-    "✅ Functions (13 reusable functions created)",
-    "✅ Arrays (cart array with product objects)",
-    "✅ Objects (product objects, pricing object)",
-    "✅ Events (click, change, input listeners)",
-    "✅ Conditionals (if/else statements for validation)",
-    "✅ Loops (forEach, for loop for calculations)",
-  ];
-
-  // LOOP through skills array and log each one
-  skills.forEach(function (skill) {
-    console.log(`  ${skill}`);
-  });
-
-  console.log("\n🛒 CART CONTENTS:\n");
-
-  // LOOP through cart and display each product
-  cart.forEach(function (product, index) {
-    console.log(`  ${index + 1}. ${product.name}`);
-    console.log(`     Quantity: ${product.quantity}`);
-    console.log(`     Price: $${product.price.toFixed(2)}`);
-    console.log(
-      `     Subtotal: $${(product.price * product.quantity).toFixed(2)}\n`
+    // Get existing orders
+    const existingOrders = JSON.parse(
+      localStorage.getItem("userOrders") || "[]"
     );
-  });
 
-  // Display pricing summary
-  const subtotal = calculateSubtotal();
-  const tax = calculateTax(subtotal);
-  const total = calculateTotal(subtotal, pricing.deliveryFee, tax);
+    // Create new order object
+    const newOrder = {
+      orderId: orderId,
+      timestamp: new Date().toISOString(),
+      items: currentOrder.items || [],
+      subtotal: currentOrder.subtotal || 0,
+      deliveryFee: currentOrder.deliveryFee || 1000,
+      paymentMethod: paymentMethod,
+      customerInfo: customerInfo,
+      status: "Pending",
+    };
 
-  console.log("💰 PRICE SUMMARY:\n");
-  console.log(`  Subtotal: $${subtotal.toFixed(2)}`);
-  console.log(`  Delivery: $${pricing.deliveryFee.toFixed(2)}`);
-  console.log(`  Tax (8%): $${tax.toFixed(2)}`);
-  console.log(`  ${"-".repeat(30)}`);
-  console.log(
-    `  %cTOTAL: $${total.toFixed(2)}`,
-    "color: #6b8e23; font-weight: bold; font-size: 16px;"
-  );
+    // Add new order to beginning of array
+    existingOrders.unshift(newOrder);
 
-  console.log("\n🎨 PAGE FEATURES:\n");
-  console.log("  ✓ Responsive design (Mobile, Tablet, Desktop)");
-  console.log("  ✓ Real-time input validation");
-  console.log("  ✓ Dynamic cart rendering");
-  console.log("  ✓ Automatic price calculations");
-  console.log("  ✓ Payment method selection");
-  console.log("  ✓ Semantic HTML structure");
-  console.log("  ✓ CSS variables & relative units");
+    // Save back to localStorage
+    localStorage.setItem("userOrders", JSON.stringify(existingOrders));
 
-  console.log("\n📱 TRY THESE INTERACTIONS:\n");
-  console.log("  1. Type in delivery address (try less than 5 characters)");
-  console.log("  2. Enter phone number (watch validation)");
-  console.log("  3. Select a payment method");
-  console.log("  4. Click the back button");
-  console.log("  5. Resize browser to see responsive design");
+    // Clear current order
+    localStorage.removeItem("currentOrder");
 
-  console.log(
-    "\n%c========================================",
-    "color: #6b8e23;"
-  );
-  console.log(
-    "%c🚀 Checkout page ready! Happy coding! 🚀",
-    "color: #6b8e23; font-weight: bold;"
-  );
-  console.log(
-    "%c========================================\n",
-    "color: #6b8e23;"
-  );
+    return orderId;
+  }
+
+  // Function to redirect to orders page
+  redirectToOrders() {
+    setTimeout(() => {
+      window.location.href = "../orders/orders.html";
+    }, 1500);
+  }
+
+  async processCardPayment() {
+    const cardNumber = document
+      .getElementById("cardNumber")
+      .value.replace(/\s/g, "");
+    const cardHolder = document.getElementById("cardHolder").value.trim();
+    const cardExpiry = document.getElementById("cardExpiry").value;
+    const cardCvv = document.getElementById("cardCvv").value;
+    const cardPin = document.getElementById("cardPin").value;
+
+    // Validate fields
+    if (!cardNumber || cardNumber.length < 13) {
+      alert("Please enter a valid card number");
+      return;
+    }
+    if (!cardHolder) {
+      alert("Please enter cardholder name");
+      return;
+    }
+    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+      alert("Please enter a valid expiration date (MM/YY)");
+      return;
+    }
+    if (!cardCvv || cardCvv.length < 3) {
+      alert("Please enter a valid CVV");
+      return;
+    }
+    if (!cardPin || cardPin.length < 4) {
+      alert("Please enter your 4-digit PIN");
+      return;
+    }
+
+    // Simulate processing
+    const proceedBtn = document.getElementById("proceedPayment");
+    const originalText = proceedBtn.textContent;
+    proceedBtn.disabled = true;
+    proceedBtn.textContent = "Processing...";
+
+    await this.simulateAPICall();
+
+    // Save order to localStorage with customer info
+    const cardholderName = document
+      .getElementById("cardholderName")
+      .value.trim();
+    const orderId = this.saveOrder("Credit/Debit Card", {
+      name: cardholderName,
+    });
+
+    // Close modal and show success
+    this.closeCardModal();
+    alert(
+      `Payment successful!\nOrder ID: ${orderId}\nThank you for your order!`
+    );
+
+    // Clear marketplace state after successful payment
+    localStorage.removeItem("marketplaceState");
+    localStorage.removeItem("marketplacePage");
+
+    proceedBtn.disabled = false;
+    proceedBtn.textContent = originalText;
+
+    // Redirect to orders page
+    this.redirectToOrders();
+  }
+
+  async processCODPayment() {
+    const codName = document.getElementById("codName").value.trim();
+    const codPhone = document.getElementById("codPhone").value.trim();
+    const codAddress = document.getElementById("codAddress").value.trim();
+
+    if (!codName) {
+      alert("Please enter your full name");
+      return;
+    }
+    if (!codPhone || codPhone.length < 10) {
+      alert("Please enter a valid phone number");
+      return;
+    }
+    if (!codAddress) {
+      alert("Please enter your delivery address");
+      return;
+    }
+
+    // Simulate processing
+    const proceedBtn = document.getElementById("proceedCOD");
+    const originalText = proceedBtn.textContent;
+    proceedBtn.disabled = true;
+    proceedBtn.textContent = "Processing...";
+
+    await this.simulateAPICall();
+
+    // Save order to localStorage with customer info
+    const orderId = this.saveOrder("Cash on Delivery", {
+      name: codName,
+      phone: codPhone,
+      address: codAddress,
+    });
+
+    // Close modal and show success
+    const modal = document.getElementById("codModal");
+    this.closeModal(modal);
+    alert(
+      `Order confirmed!\nOrder ID: ${orderId}\nYour order will be delivered soon. Payment on delivery.`
+    );
+
+    // Clear marketplace state after successful payment
+    localStorage.removeItem("marketplaceState");
+    localStorage.removeItem("marketplacePage");
+
+    proceedBtn.disabled = false;
+    proceedBtn.textContent = originalText;
+
+    // Redirect to orders page
+    this.redirectToOrders();
+  }
+
+  async processBankPayment() {
+    const bankName = document.getElementById("bankName").value.trim();
+    const bankReference = document.getElementById("bankReference").value.trim();
+
+    if (!bankName) {
+      alert("Please enter your full name");
+      return;
+    }
+    if (!bankReference) {
+      alert("Please enter your transaction reference number");
+      return;
+    }
+
+    // Simulate processing
+    const proceedBtn = document.getElementById("proceedBank");
+    const originalText = proceedBtn.textContent;
+    proceedBtn.disabled = true;
+    proceedBtn.textContent = "Processing...";
+
+    await this.simulateAPICall();
+
+    // Save order to localStorage with customer info
+    const orderId = this.saveOrder("Bank Transfer", {
+      name: bankName,
+      reference: bankReference,
+    });
+
+    // Close modal and show success
+    const modal = document.getElementById("bankModal");
+    this.closeModal(modal);
+    alert(
+      `Payment received!\nOrder ID: ${orderId}\nYour order will be processed once we verify your bank transfer.`
+    );
+
+    // Clear marketplace state after successful payment
+    localStorage.removeItem("marketplaceState");
+    localStorage.removeItem("marketplacePage");
+
+    proceedBtn.disabled = false;
+    proceedBtn.textContent = originalText;
+
+    // Redirect to orders page
+    this.redirectToOrders();
+  }
+
+  updateCart() {
+    const items = document.querySelectorAll(".product-item");
+    let subtotal = 0;
+
+    items.forEach((item) => {
+      const price = parseFloat(
+        item.querySelector(".product-price").textContent.replace(/[₦,]/g, "")
+      );
+      subtotal += price;
+    });
+
+    const deliveryFee = 1000.0;
+    const tax = 0.0;
+    const total = subtotal + deliveryFee + tax;
+
+    // Update summary using the correct IDs
+    const itemCountEl = document.getElementById("itemCount");
+    const subtotalEl = document.getElementById("subtotalAmount");
+    const deliveryEl = document.getElementById("deliveryFee");
+    const totalEl = document.getElementById("totalAmount");
+
+    if (itemCountEl) itemCountEl.textContent = items.length;
+    if (subtotalEl) subtotalEl.textContent = `₦${subtotal.toLocaleString()}.00`;
+    if (deliveryEl)
+      deliveryEl.textContent = `₦${deliveryFee.toLocaleString()}.00`;
+    if (totalEl) totalEl.textContent = `₦${total.toLocaleString()}.00`;
+  }
+
+  simulateAPICall() {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1500);
+    });
+  }
 }
 
-// Call the summary function when page loads
-document.addEventListener("DOMContentLoaded", function () {
-  // Small delay to ensure everything is loaded
-  setTimeout(logProjectSummary, 500);
+// Initialize the payment system when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new PaymentSystem();
 });
-
-// ===================================
-// UTILITY FUNCTIONS - Helper Functions
-// ===================================
-
-// FUNCTION 15: Format currency
-function formatCurrency(amount) {
-  return `$${amount.toFixed(2)}`;
-}
-
-// FUNCTION 16: Get selected payment method
-function getSelectedPaymentMethod() {
-  const selected = document.querySelector('input[name="payment"]:checked');
-  return selected ? selected.value : null;
-}
-
-// FUNCTION 17: Check if form is complete
-function isFormComplete() {
-  const hasDelivery = deliveryInput.value.trim().length >= 5;
-  const hasPhone = phoneInput.value.replace(/\D/g, "").length >= 10;
-  const hasPayment = getSelectedPaymentMethod() !== null;
-
-  return hasDelivery && hasPhone && hasPayment;
-}
-
-// ===================================
-// EXPOSE FUNCTIONS FOR TESTING (Optional)
-// ===================================
-
-// Make functions available in console for testing
-window.checkoutApp = {
-  cart: cart,
-  validateForm: validateAllInputs,
-  calculateTotal: function () {
-    const subtotal = calculateSubtotal();
-    const tax = calculateTax(subtotal);
-    return calculateTotal(subtotal, pricing.deliveryFee, tax);
-  },
-  isComplete: isFormComplete,
-  summary: logProjectSummary,
-};
-
-console.log(
-  "%cℹ️ Test functions available: window.checkoutApp",
-  "color: #666; font-style: italic;"
-);
