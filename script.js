@@ -37,17 +37,18 @@ function showSlide(index) {
   if (index >= slides.length) currentSlideIndex = 0;
   if (index < 0) currentSlideIndex = slides.length - 1;
 
-  // Remove active class from all slides and dots
-  slides.forEach((slide) => slide.classList.remove("active"));
-  // dots.forEach((dot) => dot.classList.remove("active"));
+  // Remove active and prev classes from all slides
+  slides.forEach((slide, i) => {
+    slide.classList.remove("active", "prev");
+    if (i < currentSlideIndex) {
+      slide.classList.add("prev");
+    }
+  });
 
-  // Add active class to current slide and dot
+  // Add active class to current slide
   if (slides[currentSlideIndex]) {
     slides[currentSlideIndex].classList.add("active");
   }
-  // if (dots[currentSlideIndex]) {
-  //   dots[currentSlideIndex].classList.add("active");
-  // }
 }
 
 function changeSlide(direction) {
@@ -67,13 +68,13 @@ function currentSlide(index) {
 }
 
 function startAutoSlide() {
-  // Auto-advance slider every 5 seconds
+  // Auto-advance slider every 8 seconds
   if (slides.length > 0) {
     autoSlideInterval = setInterval(() => {
       currentSlideIndex++;
       if (currentSlideIndex >= slides.length) currentSlideIndex = 0;
       showSlide(currentSlideIndex);
-    }, 5000);
+    }, 8000);
   }
 }
 
@@ -81,6 +82,43 @@ function startAutoSlide() {
 if (slides.length > 0) {
   showSlide(currentSlideIndex);
   startAutoSlide();
+}
+
+// ===== Statistics Counter Animation =====
+function animateCounter(element, target, duration = 2000) {
+  let current = 0;
+  const increment = target / (duration / 16); // 60fps
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    element.textContent = Math.floor(current) + "%";
+  }, 16);
+}
+
+// Intersection Observer for stats animation
+const statsObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const statNumbers = document.querySelectorAll(".stat-number");
+        statNumbers.forEach((stat) => {
+          const target = parseInt(stat.getAttribute("data-target"));
+          animateCounter(stat, target);
+        });
+        statsObserver.disconnect(); // Animate only once
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
+
+// Observe the stats container
+const statsContainer = document.querySelector(".stats-container");
+if (statsContainer) {
+  statsObserver.observe(statsContainer);
 }
 
 // Mobile Navigation
