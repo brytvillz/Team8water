@@ -1,0 +1,56 @@
+<!-- This is a reference navbar structure that should be used across all pages -->
+<nav class="navbar scrolled">
+  <div class="container">
+    <div class="nav-brand">
+      <img src="../images/Crop8Hub nav-logo.svg" alt="Crop8hub Logo" />
+    </div>
+    
+    <div class="nav-search">
+      <input type="text" placeholder="Search crops" class="nav-search-input" id="navSearchInput" />
+      <a href="#" class="nav-search-btn" id="navSearchBtn">
+        <img src="../images/search icon.svg" alt="Search" />
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinksLoggedIn">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../marketplace/market.html">Marketplace</a></li>
+      <li><a href="../orders/orders.html">Orders</a></li>
+      <li><a href="../profile/profile.html">Profile</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-auth">
+      <div class="user-menu" id="userMenu">
+        <span class="user-name" id="userName">Hi User</span>
+        <button class="btn-auth" id="logoutBtn">Logout</button>
+      </div>
+
+      <div class="mobile-toggle" id="mobileToggle">
+        <span class="user-name mobile-user-display" id="mobileUserDisplay" style="display: none; margin-right: 10px;">Hi User</span>
+        <a href="#" id="showNav">
+          <img src="../images/nav icon.svg" alt="navigation icon" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Links -->
+  <ul class="mobile-nav-links" id="mobileNavLoggedIn" style="display: none">
+    <a href="#" id="hideNavLoggedIn">
+      <img src="../images/close icon.svg" alt="close icon" />
+    </a>
+
+    <span class="user-name" id="mobileUserName">Hi User</span>
+
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../marketplace/market.html">Marketplace</a></li>
+    <li><a href="../orders/orders.html">Orders</a></li>
+    <li><a href="../profile/profile.html">Profile</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+
+    <div class="mobile-auth">
+      <button class="btn-auth" id="mobileLogoutBtn">Logout</button>
+    </div>
+  </ul>
+</nav>
