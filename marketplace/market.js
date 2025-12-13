@@ -186,64 +186,36 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//To control carousel
+//To control carousel - Smooth continuous auto-scroll with hover pause
 const track = document.querySelector(".carousel-track");
-const arrows = document.querySelectorAll(".arrow-btn");
 const images = document.querySelectorAll(".carousel-track img");
+const carouselContainer = document.querySelector(".carousel-container");
 
-if (images.length === 0) {
-  console.error("No images found in the carousel track.");
-}
+if (!track || images.length === 0) {
+  console.error("Carousel elements not found.");
+} else {
+  // Pause animation on hover over any image
+  images.forEach((img) => {
+    img.addEventListener("mouseenter", () => {
+      track.classList.add("paused");
+    });
 
-const imgWidth = images.length > 0 ? images[0].offsetWidth + 16 : 0;
-const totalImages = images.length;
-const imagesToShow = 2;
-const lastValidIndex = totalImages - imagesToShow;
-
-let currentIndex = 0;
-const pace = 3000;
-
-const updatePosition = () => {
-  track.style.transform = `translateX(-${currentIndex * imgWidth}px)`;
-};
-
-const autoSlide = () => {
-  if (totalImages <= imagesToShow) return;
-
-  currentIndex += 2;
-
-  if (currentIndex > lastValidIndex) {
-    currentIndex = 0;
-  }
-
-  updatePosition();
-};
-
-let carouselInterval = setInterval(autoSlide, pace);
-
-arrows.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    clearInterval(carouselInterval);
-
-    const direction = btn.dataset.direction;
-
-    if (direction === "right") {
-      currentIndex += 1;
-      if (currentIndex > lastValidIndex) {
-        currentIndex = 0;
-      }
-    } else {
-      currentIndex -= 1;
-      if (currentIndex < 0) {
-        currentIndex = lastValidIndex;
-      }
-    }
-
-    updatePosition();
-
-    carouselInterval = setInterval(autoSlide, pace);
+    img.addEventListener("mouseleave", () => {
+      track.classList.remove("paused");
+    });
   });
-});
+
+  // Pause animation on hover over container
+  if (carouselContainer) {
+    carouselContainer.addEventListener("mouseenter", () => {
+      track.classList.add("paused");
+    });
+
+    carouselContainer.addEventListener("mouseleave", () => {
+      track.classList.remove("paused");
+    });
+  }
+}
 
 //To take note of the number of crops in real time
 const accurateCropCounts = {

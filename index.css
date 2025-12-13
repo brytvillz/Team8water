@@ -167,6 +167,53 @@ body {
   background-color: #8b5a1f;
 }
 
+/* Fixed Large Shop Now Button */
+.shop-now-btn-fixed {
+  position: fixed;
+  bottom: 6rem;
+  left: 8rem;
+  z-index: 1000;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.shop-now-btn-fixed button {
+  color: #ffffff;
+  background-color: #af6f28;
+  padding: 1.5rem 4rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 5px 5px 15px #00000060 inset;
+  transition: all 0.4s ease;
+  animation: pulseGlow 2s ease-in-out infinite;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 5px 5px 15px #00000060 inset;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(175, 111, 40, 0.6),
+      5px 5px 15px #00000060 inset, 0 0 20px rgba(175, 111, 40, 0.5);
+  }
+}
+
+.shop-now-btn-fixed:hover button {
+  background-color: #8b5a1f;
+  transform: scale(1.1);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 5px 5px 15px #00000060 inset,
+    0 0 30px rgba(175, 111, 40, 0.8);
+}
+
 /* Slider Navigation Buttons */
 .slider-btn {
   position: absolute;
@@ -1480,6 +1527,16 @@ section:nth-child(4) {
     font-size: 0.95rem;
   }
 
+  .shop-now-btn-fixed {
+    bottom: 4rem;
+    left: 5rem;
+  }
+
+  .shop-now-btn-fixed button {
+    padding: 1.2rem 3rem;
+    font-size: 1.4rem;
+  }
+
   .slider-btn {
     font-size: 1.5rem;
     padding: 0.4rem 0.8rem;
@@ -1834,6 +1891,17 @@ section:nth-child(4) {
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 1rem;
+  }
+
+  .shop-now-btn-fixed {
+    bottom: 3rem;
+    left: 4rem;
+  }
+
+  .shop-now-btn-fixed button {
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
   }
 
   .slide-content button {

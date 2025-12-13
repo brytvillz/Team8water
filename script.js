@@ -8,20 +8,6 @@ const navLinksLoggedIn = document.getElementById("navLinksLoggedIn");
 const navLinks = document.querySelectorAll(".mobile-nav-links li");
 const navBar = document.querySelector(".container");
 
-// ===== Service Worker Registration for Faster Loading =====
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then((registration) => {
-        console.log("ServiceWorker registered:", registration.scope);
-      })
-      .catch((error) => {
-        console.log("ServiceWorker registration failed:", error);
-      });
-  });
-}
-
 // Footer navigation elements
 const footerNavLoggedOut = document.getElementById("footerNavLoggedOut");
 const footerNavLoggedIn = document.getElementById("footerNavLoggedIn");
@@ -35,6 +21,7 @@ const registerModal = document.querySelector(".signUp-card");
 const loginBtn = document.querySelectorAll("#loginBtn");
 const logoutBtn = document.querySelectorAll("#logoutBtn");
 const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+const mobileNavLogoutBtn = document.getElementById("mobileNavLogoutBtn");
 const formClose = document.querySelectorAll("#formClose");
 const switchToRegister = document.getElementById("switchToRegister");
 const switchToLogin = document.getElementById("switchToLogin");
@@ -151,6 +138,7 @@ if (showNav) {
     }
 
     navBar.style.display = "none";
+    document.body.classList.add("menu-open"); // Hide mobile nav logout button
   });
 }
 
@@ -160,6 +148,7 @@ if (hideNavLoggedOut) {
     showNav.style.display = "block";
     mobileNavLoggedOut.style.display = "none";
     navBar.style.display = "flex";
+    document.body.classList.remove("menu-open"); // Show mobile nav logout button
   });
 }
 
@@ -169,6 +158,7 @@ if (hideNavLoggedIn) {
     showNav.style.display = "block";
     mobileNavLoggedIn.style.display = "none";
     navBar.style.display = "flex";
+    document.body.classList.remove("menu-open"); // Show mobile nav logout button
   });
 }
 
@@ -266,10 +256,16 @@ if (registerFormElement) {
       return;
     }
 
-    // Check if email already exists
+    // Check if email already exists (case-insensitive)
     const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    if (existingUsers.some((user) => user.email === email)) {
-      alert("This email is already registered");
+    if (
+      existingUsers.some(
+        (user) => user.email.toLowerCase() === email.toLowerCase()
+      )
+    ) {
+      alert(
+        "This email is already registered. Please use a different email or login."
+      );
       return;
     }
 
@@ -286,14 +282,21 @@ if (registerFormElement) {
     existingUsers.push(newUser);
     localStorage.setItem("users", JSON.stringify(existingUsers));
 
-    alert("Registration successful! You can now login.");
+    alert("Registration successful! Logging you in...");
 
-    // Clear form
+    // Clear registration form
     registerFormElement.reset();
+
+    // Auto-fill login form with registered credentials
+    document.getElementById("loginEmail").value = email;
+    document.getElementById("loginPassword").value = password;
 
     // Switch to login form
     loginModal.style.display = "flex";
     registerModal.style.display = "none";
+
+    // Auto-submit the login form
+    loginFormElement.dispatchEvent(new Event("submit"));
   });
 }
 
@@ -315,13 +318,16 @@ if (loginFormElement) {
     // Get users from localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Find matching user
+    // Find matching user (case-insensitive email comparison)
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (u) =>
+        u.email.toLowerCase() === email.toLowerCase() && u.password === password
     );
 
     if (!user) {
-      alert("Invalid email or password");
+      alert(
+        "Invalid email or password. Please check your credentials and try again."
+      );
       return;
     }
 
@@ -445,6 +451,17 @@ if (mobileLogoutBtn) {
   });
 }
 
+// Mobile Nav Logout Button (next to hamburger)
+if (mobileNavLogoutBtn) {
+  mobileNavLogoutBtn.addEventListener("click", () => {
+    // Clear current user
+    localStorage.removeItem("currentUser");
+
+    // Reload the page to reset all UI states
+    location.reload();
+  });
+}
+
 // ===== Check if user is already logged in on page load =====
 window.addEventListener("load", () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -472,6 +489,9 @@ window.addEventListener("load", () => {
       mobileUserDisplay.textContent = `Hi ${currentUser.firstName}`;
       mobileUserDisplay.style.display = "inline-block";
     }
+    if (mobileNavLogoutBtn) {
+      mobileNavLogoutBtn.classList.add("show");
+    }
 
     document.getElementById(
       "userName"
@@ -497,6 +517,9 @@ window.addEventListener("load", () => {
     // Mobile: hide logout button
     if (mobileLogoutBtn) {
       mobileLogoutBtn.style.display = "none";
+    }
+    if (mobileNavLogoutBtn) {
+      mobileNavLogoutBtn.classList.remove("show");
     }
   }
 
@@ -546,6 +569,46 @@ if (mobileMarketplaceLinkLoggedOut) {
       loginModal.style.display = "flex";
       registerModal.style.display = "none";
     }
+  });
+}
+
+// ===== Shop Now Button Protection =====
+// Protect shop now button - only accessible to logged-in users
+const shopNowBtn = document.getElementById("shopNowBtn");
+
+if (shopNowBtn) {
+  shopNowBtn.addEventListener("click", (e) => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - prevent navigation and show login modal
+      e.preventDefault();
+      alert("Please log in to access the marketplace");
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    }
+    // If user is logged in, allow default navigation to marketplace
+  });
+}
+
+// ===== Start Shopping Now Button Protection =====
+// Protect start shopping now button - only accessible to logged-in users
+const startShoppingBtn = document.getElementById("startShoppingBtn");
+
+if (startShoppingBtn) {
+  startShoppingBtn.addEventListener("click", (e) => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      // User not logged in - prevent navigation and show login modal
+      e.preventDefault();
+      alert("Please log in to access the marketplace");
+      modalContainer.style.display = "flex";
+      loginModal.style.display = "flex";
+      registerModal.style.display = "none";
+    }
+    // If user is logged in, allow default navigation to marketplace
   });
 }
 
@@ -618,6 +681,77 @@ function handleSearch() {
   }
 }
 
+// ===== Mobile Search Functionality =====
+const mobileNavSearchInput = document.getElementById("mobileNavSearchInput");
+const mobileNavSearchBtn = document.getElementById("mobileNavSearchBtn");
+const mobileNavSearchInputLoggedIn = document.getElementById(
+  "mobileNavSearchInputLoggedIn"
+);
+const mobileNavSearchBtnLoggedIn = document.getElementById(
+  "mobileNavSearchBtnLoggedIn"
+);
+
+// Handle mobile search button click (logged out)
+if (mobileNavSearchBtn) {
+  mobileNavSearchBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    handleMobileSearch(mobileNavSearchInput);
+  });
+}
+
+// Handle Enter key press in mobile search input (logged out)
+if (mobileNavSearchInput) {
+  mobileNavSearchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleMobileSearch(mobileNavSearchInput);
+    }
+  });
+}
+
+// Handle mobile search button click (logged in)
+if (mobileNavSearchBtnLoggedIn) {
+  mobileNavSearchBtnLoggedIn.addEventListener("click", (e) => {
+    e.preventDefault();
+    handleMobileSearch(mobileNavSearchInputLoggedIn);
+  });
+}
+
+// Handle Enter key press in mobile search input (logged in)
+if (mobileNavSearchInputLoggedIn) {
+  mobileNavSearchInputLoggedIn.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleMobileSearch(mobileNavSearchInputLoggedIn);
+    }
+  });
+}
+
+function handleMobileSearch(inputElement) {
+  const searchQuery = inputElement.value.trim();
+
+  if (!searchQuery) {
+    alert("Please enter a crop name to search");
+    return;
+  }
+
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  if (!currentUser) {
+    // User not logged in - close mobile menu and show login modal
+    alert("Please log in to search for crops");
+    mobileNavLoggedOut.style.display = "none";
+    navBar.style.display = "flex";
+    modalContainer.style.display = "flex";
+    loginModal.style.display = "flex";
+    registerModal.style.display = "none";
+  } else {
+    // User is logged in - redirect to marketplace with search query
+    localStorage.setItem("searchQuery", searchQuery);
+    window.location.href = "marketplace/market.html";
+  }
+}
+
 // ===== Footer Marketplace Link Protection (for logged-out users) =====
 const footerMarketplaceLinkLoggedOut = document.getElementById(
   "footerMarketplaceLinkLoggedOut"
@@ -640,4 +774,31 @@ if (footerMarketplaceLinkLoggedOut) {
       window.location.href = "marketplace/market.html";
     }
   });
+}
+
+// ===== Why Shop With Us Shake Animation =====
+const whyShopSection = document.querySelector(".about-top-right");
+
+if (whyShopSection) {
+  function triggerShake() {
+    // Remove class if it exists
+    whyShopSection.classList.remove("shake-active");
+
+    // Force reflow to restart animation
+    void whyShopSection.offsetWidth;
+
+    // Add class to trigger animation
+    whyShopSection.classList.add("shake-active");
+
+    // Remove class after animation completes
+    setTimeout(() => {
+      whyShopSection.classList.remove("shake-active");
+    }, 600);
+  }
+
+  // Trigger shake every 5 seconds
+  setInterval(triggerShake, 5000);
+
+  // Trigger first shake after 2 seconds
+  setTimeout(triggerShake, 2000);
 }
