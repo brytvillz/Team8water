@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Orders - Crop8hub</title>
+    <link rel="stylesheet" href="orders.css" />
+    <link
+      rel="shortcut icon"
+      href="../images/Crop8Hub nav-logo.svg"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled">
+      <div class="container">
+        <div class="nav-brand">
+          <img src="../images/Crop8Hub nav-logo.svg" alt="Crop8Hub Logo" />
+        </div>
+        <div class="nav-search">
+          <input
+            type="text"
+            placeholder="Search crops"
+            class="nav-search-input"
+            id="navSearchInput"
+          />
+          <a href="#" class="nav-search-btn" id="navSearchBtn">
+            <img src="../images/search icon.svg" alt="" />
+          </a>
+        </div>
+
+        <!-- Nav Links for NOT Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedOut">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../marketplace/market.html">Marketplace</a></li>
+          <li><a href="../index.html#categories">Categories</a></li>
+          <li><a href="../index.html#about">About Us</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+
+        <!-- Nav Links for Logged In Users -->
+        <ul class="nav-links" id="navLinksLoggedIn" style="display: none">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../marketplace/market.html">Marketplace</a></li>
+          <li><a href="../orders/orders.html" class="active">Orders</a></li>
+          <li><a href="../profile/profile.html">Profile</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-auth">
+          <button class="btn-auth" id="loginBtn">Login</button>
+          <div class="user-menu" id="userMenu" style="display: none">
+            <span id="userName">Hi User</span>
+            <button class="btn-auth" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+
+        <!-- Mobile Toggle (Hamburger) -->
+        <div class="mobile-toggle" id="showNav">
+          <span class="mobile-user-display" id="mobileUserDisplay"></span>
+          <a href="javascript:void(0)">
+            <img src="../images/nav icon.svg" alt="menu" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Links for NOT Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedOut">
+        <a href="javascript:void(0)" id="hideNavLoggedOut">
+          <img src="../images/close icon.svg" alt="close icon" />
+        </a>
+
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../marketplace/market.html">Marketplace</a></li>
+        <li><a href="../index.html#categories">Categories</a></li>
+        <li><a href="../index.html#about">About Us</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+
+      <!-- Mobile Nav Links for Logged In Users -->
+      <ul class="mobile-nav-links" id="mobileNavLoggedIn" style="display: none">
+        <a href="javascript:void(0)" id="hideNavLoggedIn">
+          <img src="../images/close icon.svg" alt="close icon" />
+        </a>
+
+        <span class="user-name" id="mobileUserName">Hi User</span>
+
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../marketplace/market.html">Marketplace</a></li>
+        <li><a href="../orders/orders.html">Orders</a></li>
+        <li><a href="../profile/profile.html">Profile</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+
+        <div class="mobile-auth">
+          <button class="btn-auth" id="mobileLogoutBtn">Logout</button>
+        </div>
+      </ul>
+    </nav>
+
+    <main class="orders-container">
+      <h1 class="page-heading">View your orders and delivery details below:</h1>
+
+      <!-- ORDER CARD -->
+      <div class="order-card-wrapper">
+        <!-- ORDER HEADER -->
+        <div class="order-header-section">
+          <div class="order-info">
+            <h2 class="order-number">ORD8342293210732</h2>
+            <p class="order-timestamp">November 10, 2025 at 12:00 PM</p>
+          </div>
+          <span class="status-pill">Pending</span>
+        </div>
+
+        <!-- CUSTOMER INFO SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">👤 Customer & Delivery Information</h3>
+          <div class="info-box">
+            <p class="info-line">
+              <span class="label">Full Name:</span> Johnny English
+            </p>
+            <p class="info-line">
+              <span class="label">Contact:</span> +2348-024-0991
+            </p>
+            <p class="info-line">
+              <span class="label">Location:</span> New Haven, Bisala road.
+            </p>
+            <p class="info-line"><span class="label">City:</span> Enugu.</p>
+            <p class="info-line">
+              <span class="label">State:</span> Enugu state.
+            </p>
+          </div>
+        </div>
+
+        <!-- ORDER ITEMS SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">🛒 Order Items</h3>
+          <div class="items-container">
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🌽</span>
+                <div class="item-info">
+                  <p class="item-title">Maize</p>
+                  <p class="item-desc">6 × ₦85,000/bag</p>
+                </div>
+              </div>
+              <p class="item-total">₦270,000</p>
+            </div>
+
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🍚</span>
+                <div class="item-info">
+                  <p class="item-title">Rice</p>
+                  <p class="item-desc">2 × ₦55,000/bag</p>
+                </div>
+              </div>
+              <p class="item-total">₦110,000</p>
+            </div>
+
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🍠</span>
+                <div class="item-info">
+                  <p class="item-title">Yam</p>
+                  <p class="item-desc">14 × ₦3,500/tuber</p>
+                </div>
+              </div>
+              <p class="item-total">₦35,000</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAYMENT METHOD SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">💳 Payment Method</h3>
+          <div class="payment-box">
+            <div class="payment-row">
+              <span class="payment-emoji">💰</span>
+              <div class="payment-info">
+                <p class="payment-title">Pay on delivery</p>
+                <p class="payment-subtitle">Select payment option</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">📊 Order Summary</h3>
+          <div class="summary-box">
+            <div class="summary-line">
+              <span>Sub total:</span>
+              <span>₦415,000</span>
+            </div>
+            <div class="summary-line">
+              <span>Delivery fee:</span>
+              <span>₦2,000</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-line summary-final">
+              <span class="total-label">Total:</span>
+              <span class="total-value">₦417,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Mobile Menu Toggle
+      const mobileToggle = document.getElementById("ordersMobileToggle");
+      const mobileMenu = document.getElementById("ordersMobileMenu");
+      const mobileOverlay = document.getElementById("ordersMobileOverlay");
+      const mobileClose = document.getElementById("ordersMobileClose");
+
+      function openMobileMenu() {
+        mobileMenu.classList.add("active");
+        mobileOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove("active");
+        mobileOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      if (mobileToggle) {
+        mobileToggle.addEventListener("click", openMobileMenu);
+      }
+
+      if (mobileClose) {
+        mobileClose.addEventListener("click", closeMobileMenu);
+      }
+
+      if (mobileOverlay) {
+        mobileOverlay.addEventListener("click", closeMobileMenu);
+      }
+    </script>
+    <script src="orders.js"></script>
+  </body>
+</html>
