@@ -454,39 +454,11 @@ body {
   overflow: hidden;
 }
 
-#thirdPartLeftIcon img,
-#thirdPartRightIcon img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-#thirdPartLeftIcon img {
-  padding-right: 15px;
-  margin-left: 30px;
-}
-
-#thirdPartRightIcon img {
-  padding-left: 15px;
-}
-
-#thirdPartLeftIcon {
-  margin-right: 20px;
-  flex-shrink: 0;
-}
-
-#thirdPartRightIcon {
-  margin-left: 20px;
-  flex-shrink: 0;
-  padding-right: 15px;
-}
-
 .carousel-container {
   overflow: hidden;
-  width: 1300px;
-  margin: 0;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   height: 100%;
 }
 
@@ -494,9 +466,22 @@ body {
   display: flex;
   gap: 16px;
   padding: 20px 0;
-  transition: transform 1.9s ease-in-out;
   width: fit-content;
   justify-content: flex-start;
+  animation: scroll 40s linear infinite;
+}
+
+.carousel-track.paused {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .carousel-track img {
@@ -507,6 +492,12 @@ body {
   padding: 0;
   margin: 0;
   flex-shrink: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-track img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* --- FOURTH PART (CTA & Grid) --- */
@@ -547,6 +538,93 @@ body {
   font-weight: bold;
 }
 
+/* Bounce Animation for Payment Button */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Shake Animation for Payment Button */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Combined Bounce and Shake Animation */
+@keyframes bounceAndShake {
+  0% {
+    transform: translateY(0);
+  }
+  8% {
+    transform: translateY(-8px);
+  }
+  16% {
+    transform: translateY(0);
+  }
+  20%,
+  22%,
+  24%,
+  26%,
+  28% {
+    transform: translateX(-5px) translateY(0);
+  }
+  21%,
+  23%,
+  25%,
+  27%,
+  29% {
+    transform: translateX(5px) translateY(0);
+  }
+  30% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-8px);
+  }
+  46% {
+    transform: translateY(0);
+  }
+  54% {
+    transform: translateY(-8px);
+  }
+  62% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-8px);
+  }
+  78% {
+    transform: translateY(0);
+  }
+  86% {
+    transform: translateY(-8px);
+  }
+  94%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
 #forthPartTopRight button {
   align-items: center;
   width: 290px;
@@ -559,12 +637,16 @@ body {
   color: #667e06;
   background-color: #ccd4ac;
   border: none;
+  animation: bounceAndShake 8s ease-in-out infinite;
+  transition: all 0.3s ease;
 }
 
 #forthPartTopRight button:hover {
   background-color: #556905;
   color: #ffffff;
   box-shadow: rgb(110, 119, 128);
+  animation: none;
+  transform: translateY(-2px);
 }
 
 #forthPartMid {
@@ -589,6 +671,13 @@ body {
   border-top-right-radius: 10px;
   padding-right: 4px;
   margin-bottom: 25px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .product-card img {
@@ -597,6 +686,11 @@ body {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   display: block;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
 }
 
 .product-info {
@@ -608,6 +702,11 @@ body {
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .product-info {
+  background: #f9f9f9;
 }
 .product-title {
   display: flex;
@@ -919,17 +1018,13 @@ body {
     border-radius: 0;
   }
 
-  #thirdPartLeftIcon,
-  #thirdPartRightIcon {
-    display: none; /* Hide arrows on small phones */
-  }
-
   .carousel-container {
     width: 100%;
   }
 
   .carousel-track {
     padding: 5px 0;
+    animation: scroll 30s linear infinite;
   }
 
   .carousel-track img {

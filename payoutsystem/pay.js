@@ -145,6 +145,27 @@ class PaymentSystem {
       });
     }
 
+    // Discard Order button
+    const discardOrderBtn = document.getElementById("discardOrderBtn");
+    if (discardOrderBtn) {
+      discardOrderBtn.addEventListener("click", () => {
+        // Show confirmation dialog
+        const confirmed = confirm(
+          "Are you sure you want to discard this order? All selected items and quantities will be removed."
+        );
+
+        if (confirmed) {
+          // Clear all cart/order data from localStorage
+          localStorage.removeItem("marketplaceState");
+          localStorage.removeItem("currentOrder");
+          localStorage.removeItem("marketplacePage");
+
+          // Redirect back to marketplace
+          window.location.href = "../marketplace/market.html";
+        }
+      });
+    }
+
     // Modal close button
     const modalClose = document.querySelector(".modal-close");
     if (modalClose) {

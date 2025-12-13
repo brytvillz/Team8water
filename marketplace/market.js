@@ -240,22 +240,27 @@ function formatNaira(amount) {
 }
 
 function updateGlobalSummary() {
-  const productCards = document.querySelectorAll(".product-card");
+  // First, save the current page state to localStorage
+  saveMarketplaceState();
+
+  // Then, read the complete cart from localStorage to show TOTAL across all categories
   let totalItems = 0;
   let totalPrice = 0;
 
-  productCards.forEach((card) => {
-    const checkbox = card.querySelector('input[type="checkbox"]');
-    const quantityInput = card.querySelector('input[type="number"]');
-
-    if (checkbox && checkbox.checked && card.style.display !== "none") {
-      const quantity = parseInt(quantityInput.value) || 0;
-      const price = getProductPrice(card);
-
-      totalItems += quantity;
-      totalPrice += price * quantity;
+  const savedState = localStorage.getItem("marketplaceState");
+  if (savedState) {
+    try {
+      const cart = JSON.parse(savedState);
+      cart.forEach((item) => {
+        if (item.checked && item.quantity > 0) {
+          totalItems += item.quantity;
+          totalPrice += item.price * item.quantity;
+        }
+      });
+    } catch (error) {
+      console.error("Error reading cart:", error);
     }
-  });
+  }
 
   const oneElement = document.getElementById("one");
   if (oneElement) {
@@ -466,15 +471,15 @@ function setupProductCardListeners(card) {
       quantityInput.disabled = true;
       quantityInput.value = "";
     }
+    // updateGlobalSummary now saves state automatically
     updateGlobalSummary();
-    // Save state whenever checkbox changes
-    saveMarketplaceState();
   });
 
   qtyUpButton.addEventListener("click", () => {
     if (checkbox.checked) {
       let currentQty = parseInt(quantityInput.value) || 0;
       quantityInput.value = currentQty + 1;
+      // updateGlobalSummary now saves state automatically
       updateGlobalSummary();
     }
   });
@@ -484,11 +489,13 @@ function setupProductCardListeners(card) {
       let currentQty = parseInt(quantityInput.value) || 0;
       if (currentQty > 1) {
         quantityInput.value = currentQty - 1;
+        // updateGlobalSummary now saves state automatically
         updateGlobalSummary();
       } else if (currentQty === 1) {
         checkbox.checked = false;
         quantityInput.disabled = true;
         quantityInput.value = "";
+        // updateGlobalSummary now saves state automatically
         updateGlobalSummary();
       }
     }
@@ -500,6 +507,7 @@ function setupProductCardListeners(card) {
       quantityInput.value = 1;
     }
     if (checkbox.checked) {
+      // updateGlobalSummary now saves state automatically
       updateGlobalSummary();
     }
   });
@@ -552,44 +560,90 @@ document.addEventListener("DOMContentLoaded", () => {
     window.history.replaceState({}, document.title, newUrl);
   }
 
-  updateGlobalSummary();
-
-  // Restore marketplace selections if returning from payment
+  // IMPORTANT: Restore marketplace selections FIRST before updating summary
   restoreMarketplaceSelections();
+
+  // THEN update the summary (this will save and display current state)
+  updateGlobalSummary();
 });
 
-// ===== Function to Save Marketplace State =====
+// ===== Function to Save Marketplace State (MERGES with existing cart) =====
 function saveMarketplaceState() {
-  const marketplaceState = [];
+  // Get existing cart from localStorage
+  let existingCart = [];
+  const savedState = localStorage.getItem("marketplaceState");
+  if (savedState) {
+    try {
+      existingCart = JSON.parse(savedState);
+      console.log("📦 Existing cart before save:", existingCart);
+    } catch (error) {
+      console.error("Error parsing existing cart:", error);
+      existingCart = [];
+    }
+  } else {
+    console.log("📦 No existing cart found, starting fresh");
+  }
+
   const productCards = document.querySelectorAll(".product-card");
 
   productCards.forEach((card) => {
     const checkbox = card.querySelector('input[type="checkbox"]');
     const quantityInput = card.querySelector('input[type="number"]');
     const productName = card.querySelector("h3")?.textContent;
+    const productDescription = card.querySelector(".description")?.textContent;
+    const priceText = card.querySelector(".price")?.textContent;
+    const price = priceText
+      ? priceText.match(/[\d,]+/)?.[0]?.replace(/,/g, "")
+      : "0";
+    const imageSrc = card.querySelector("img")?.src;
 
-    if (productName) {
-      // Save ALL products, not just checked ones
-      marketplaceState.push({
-        productName: productName,
-        quantity:
-          checkbox && checkbox.checked ? parseInt(quantityInput.value) || 1 : 0,
-        checked: checkbox ? checkbox.checked : false,
-      });
+    if (productName && checkbox) {
+      // Find if this product already exists in cart
+      const existingIndex = existingCart.findIndex(
+        (item) => item.productName === productName
+      );
+
+      if (checkbox.checked && quantityInput.value > 0) {
+        // Product is checked - add or update it in cart
+        const currentState = {
+          productName: productName,
+          description: productDescription || "",
+          price: parseFloat(price) || 0,
+          image: imageSrc || "",
+          quantity: parseInt(quantityInput.value) || 1,
+          checked: true,
+        };
+
+        if (existingIndex >= 0) {
+          // Update existing product in cart
+          existingCart[existingIndex] = currentState;
+        } else {
+          // Add new product to cart
+          existingCart.push(currentState);
+        }
+      } else if (existingIndex >= 0 && !checkbox.checked) {
+        // Product is unchecked - remove it from cart
+        existingCart.splice(existingIndex, 1);
+      }
+      // If product is not checked and not in cart, do nothing (preserves other category items)
     }
   });
 
-  localStorage.setItem("marketplaceState", JSON.stringify(marketplaceState));
-  // Also save the current page URL for proper navigation back
+  console.log("💾 Saving cart to localStorage:", existingCart);
+  localStorage.setItem("marketplaceState", JSON.stringify(existingCart));
   localStorage.setItem("marketplacePage", window.location.pathname);
 } // ===== Function to Restore Marketplace State =====
 function restoreMarketplaceSelections() {
   const savedState = localStorage.getItem("marketplaceState");
 
-  if (!savedState) return;
+  if (!savedState) {
+    console.log("🔄 No saved cart to restore");
+    return;
+  }
 
   try {
     const marketplaceState = JSON.parse(savedState);
+    console.log("🔄 Restoring cart:", marketplaceState);
     const productCards = document.querySelectorAll(".product-card");
 
     productCards.forEach((card) => {
@@ -628,64 +682,69 @@ const proceedToPaymentBtn = document.getElementById("proceedToPaymentBtn");
 
 if (proceedToPaymentBtn) {
   proceedToPaymentBtn.addEventListener("click", () => {
-    // Check if any items are selected
-    const selectedItems = document.querySelectorAll(
-      '.product-card input[type="checkbox"]:checked'
-    );
+    // Save current page selections first
+    saveMarketplaceState();
 
-    if (selectedItems.length === 0) {
+    // Get ALL selected items from the global cart (across all categories)
+    const savedState = localStorage.getItem("marketplaceState");
+
+    if (!savedState) {
       alert("Please select at least one item before proceeding to payment");
       return;
     }
 
-    // Get the total from the display
-    const totalText = document.getElementById("two").textContent;
-    const total = totalText.replace("Total: ₦", "").replace(/,/g, "");
+    let cart = [];
+    try {
+      cart = JSON.parse(savedState);
+    } catch (error) {
+      console.error("Error parsing cart:", error);
+      alert("Error loading cart. Please try again.");
+      return;
+    }
 
-    if (parseFloat(total) === 0) {
+    // Filter only checked items with quantity > 0
+    const selectedCartItems = cart.filter(
+      (item) => item.checked && item.quantity > 0
+    );
+
+    if (selectedCartItems.length === 0) {
+      alert("Please select at least one item before proceeding to payment");
+      return;
+    }
+
+    // Build order items from the global cart
+    const orderItems = [];
+    let subtotal = 0;
+
+    selectedCartItems.forEach((item) => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      orderItems.push({
+        name: item.productName,
+        description: item.description,
+        price: item.price,
+        quantity: item.quantity,
+        total: itemTotal,
+        image: item.image,
+      });
+    });
+
+    if (subtotal === 0) {
       alert("Please select items with valid quantities");
       return;
     }
 
-    // Collect order data
-    const orderItems = [];
-    selectedItems.forEach((checkbox) => {
-      const productCard = checkbox.closest(".product-card");
-      const productName = productCard.querySelector("h3").textContent;
-      const productDescription =
-        productCard.querySelector(".description").textContent;
-      const priceText = productCard.querySelector(".price").textContent;
-      const price = priceText.match(/[\d,]+/)[0].replace(/,/g, "");
-      const quantityInput = productCard.querySelector('input[type="number"]');
-      const quantity = parseInt(quantityInput.value) || 1;
-      const imageSrc = productCard.querySelector("img").src;
-
-      // Calculate total for this item
-      const itemTotal = parseFloat(price) * quantity;
-
-      orderItems.push({
-        name: productName,
-        description: productDescription,
-        price: parseFloat(price),
-        quantity: quantity,
-        total: itemTotal,
-        image: imageSrc,
-      });
-    });
-
     // Store order data in localStorage
     const orderData = {
       items: orderItems,
-      subtotal: parseFloat(total),
+      subtotal: subtotal,
       deliveryFee: 1000, // Fixed delivery fee
       tax: 0,
       timestamp: new Date().toISOString(),
     };
 
     localStorage.setItem("currentOrder", JSON.stringify(orderData));
-
-    // Save marketplace state before navigating
-    saveMarketplaceState();
 
     // Navigate to payout system
     window.location.href = "../payoutsystem/pay.html";

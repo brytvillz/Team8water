@@ -349,6 +349,72 @@ body {
   color: var(--text-secondary);
 }
 
+/* Bounce Animation */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Combined Bounce and Shake Animation */
+@keyframes bounceAndShake {
+  0% {
+    transform: translateY(0);
+  }
+  8% {
+    transform: translateY(-8px);
+  }
+  16% {
+    transform: translateY(0);
+  }
+  20%,
+  22%,
+  24%,
+  26%,
+  28% {
+    transform: translateX(-5px) translateY(0);
+  }
+  21%,
+  23%,
+  25%,
+  27%,
+  29% {
+    transform: translateX(5px) translateY(0);
+  }
+  30% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-8px);
+  }
+  46% {
+    transform: translateY(0);
+  }
+  54% {
+    transform: translateY(-8px);
+  }
+  62% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-8px);
+  }
+  78% {
+    transform: translateY(0);
+  }
+  86% {
+    transform: translateY(-8px);
+  }
+  94%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
 /* Checkout Button */
 .btn-checkout {
   width: 100%;
@@ -362,16 +428,19 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 10px;
+  animation: bounceAndShake 8s ease-in-out infinite;
 }
 
 .btn-checkout:hover {
   background: var(--primary-dark);
+  animation: none;
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .btn-checkout:active {
   transform: translateY(0);
+  animation: none;
 }
 
 .continue-shopping {
@@ -409,13 +478,54 @@ body {
   transform: translateY(-2px);
 }
 
+/* Order Summary Header with Discard Button */
+.order-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #667e06;
+}
+
 .order-summary-card h2 {
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #667e06;
+  margin: 0;
+}
+
+/* Discard Order Button */
+.discard-order-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1.5px solid #dc3545;
+  color: #dc3545;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.discard-order-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.discard-order-btn:hover {
+  background: #dc3545;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.discard-order-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
 }
 
 /* Product Items */
@@ -874,16 +984,19 @@ body {
   cursor: pointer;
   margin-top: 24px;
   transition: all 0.3s ease;
+  animation: bounceAndShake 8s ease-in-out infinite;
 }
 
 .btn-proceed:hover {
   background: var(--primary-dark);
+  animation: none;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(122, 143, 58, 0.3);
 }
 
 .btn-proceed:active {
   transform: translateY(0);
+  animation: none;
 }
 
 /* Alert Info */
@@ -1038,5 +1151,28 @@ body {
 
   .modal-content {
     padding: 20px;
+  }
+
+  /* Responsive Order Summary Header */
+  .order-summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .order-summary-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .discard-order-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .discard-order-btn svg {
+    width: 16px;
+    height: 16px;
   }
 }
