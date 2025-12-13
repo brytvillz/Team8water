@@ -7,8 +7,23 @@
 
     <!-- Preload Critical Resources -->
     <link rel="preload" href="index.css" as="style" />
-    <link rel="preload" href="images/hero image1.jpg" as="image" />
-    <link rel="preload" href="images/Crop8Hub nav-logo.svg" as="image" />
+    <link
+      rel="preload"
+      href="images/hero image1.jpg"
+      as="image"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="images/Crop8Hub nav-logo.svg"
+      as="image"
+      fetchpriority="high"
+    />
+
+    <!-- DNS Prefetch for faster external resource loading -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
     <link rel="stylesheet" href="index.css" />
     <link
