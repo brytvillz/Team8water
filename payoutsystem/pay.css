@@ -97,6 +97,13 @@ body {
   border-radius: 12px;
   padding: 20px;
   box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for sections */
+.section:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 .section-header {
@@ -143,6 +150,12 @@ body {
   color: var(--text-secondary);
 }
 
+/* Hover effect for info boxes */
+.info-box:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(122, 143, 58, 0.15);
+}
+
 .info-box input {
   width: 100%;
   border: none;
@@ -187,6 +200,16 @@ body {
 
 .delivery-btn:hover:not(.active) {
   border-color: var(--primary-color);
+  background: var(--bg-light-green);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(122, 143, 58, 0.15);
+}
+
+/* Active button hover effect */
+.delivery-btn.active:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(122, 143, 58, 0.3);
 }
 
 /* Payment Options */
@@ -218,9 +241,23 @@ body {
   font-weight: 500;
 }
 
+/* Hover effect for payment options */
+.payment-option label:hover {
+  border-color: var(--primary-color);
+  background: var(--bg-light-green);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(122, 143, 58, 0.15);
+}
+
 .payment-option input[type="radio"]:checked + label {
   border-color: var(--text-primary);
   background: var(--bg-white);
+}
+
+/* Keep checked state more prominent than hover */
+.payment-option input[type="radio"]:checked + label:hover {
+  border-color: var(--text-primary);
+  background: var(--bg-light-green);
 }
 
 .radio-custom {
@@ -257,6 +294,12 @@ body {
   gap: 12px;
   align-items: flex-start;
   margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.secure-payment:hover {
+  background: #dae8c8;
+  box-shadow: 0 2px 8px rgba(122, 143, 58, 0.15);
 }
 
 .secure-badge {
@@ -358,6 +401,12 @@ body {
   padding: 28px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.order-summary-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 .order-summary-card h2 {
@@ -383,6 +432,15 @@ body {
   gap: 12px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for product items */
+.product-item:hover {
+  background: var(--bg-light-green);
+  padding: 12px;
+  margin: -12px;
+  border-radius: 8px;
 }
 
 .product-item:last-child {
@@ -394,6 +452,12 @@ body {
   height: 80px;
   object-fit: cover;
   border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.product-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .product-details h3 {
@@ -401,6 +465,11 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+.product-details h3:hover {
+  color: var(--primary-color);
 }
 
 .product-description {
@@ -559,6 +628,13 @@ body {
   justify-content: space-between;
   font-size: 0.9rem;
   color: var(--text-secondary);
+  padding: 4px 0;
+  transition: all 0.3s ease;
+}
+
+.summary-row:hover {
+  color: var(--text-primary);
+  padding-left: 8px;
 }
 
 .summary-row.total {
@@ -568,6 +644,12 @@ body {
   padding-top: 12px;
   border-top: 2px solid var(--border-color);
   margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.summary-row.total:hover {
+  color: #ff6b35;
+  transform: scale(1.02);
 }
 
 .total-price {
@@ -738,6 +820,13 @@ body {
   outline: none;
 }
 
+/* Add hover effect for form inputs */
+.form-group-modal input:hover {
+  border-color: var(--primary-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(122, 143, 58, 0.1);
+}
+
 .form-group-modal input:focus {
   border-color: var(--primary-color);
   background: white;
@@ -758,6 +847,13 @@ body {
   outline: none;
   font-family: inherit;
   resize: vertical;
+}
+
+/* Add hover effect for textareas */
+.form-group-modal textarea:hover {
+  border-color: var(--primary-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(122, 143, 58, 0.1);
 }
 
 .form-group-modal textarea:focus {
@@ -824,6 +920,13 @@ body {
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.bank-details-card:hover {
+  background: #dae8c8;
+  box-shadow: 0 4px 12px rgba(122, 143, 58, 0.2);
+  border-color: var(--primary-color);
 }
 
 .bank-detail-row {
@@ -832,6 +935,16 @@ body {
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.bank-detail-row:hover {
+  padding-left: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 0 -8px;
+  padding-left: 16px;
+  padding-right: 8px;
+  border-radius: 6px;
 }
 
 .bank-detail-row:last-child {

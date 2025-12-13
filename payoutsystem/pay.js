@@ -256,6 +256,20 @@ class PaymentSystem {
   openBankModal() {
     const modal = document.getElementById("bankModal");
     if (modal) {
+      // Calculate and display the total amount
+      const orderData = JSON.parse(localStorage.getItem("currentOrder"));
+      if (orderData) {
+        const subtotal = orderData.subtotal;
+        const deliveryFee = orderData.deliveryFee || 1000;
+        const total = subtotal + deliveryFee;
+
+        const bankTransferAmountEl =
+          document.getElementById("bankTransferAmount");
+        if (bankTransferAmountEl) {
+          bankTransferAmountEl.textContent = `₦${total.toLocaleString()}.00`;
+        }
+      }
+
       requestAnimationFrame(() => {
         modal.classList.add("active");
       });
@@ -304,14 +318,6 @@ class PaymentSystem {
     const cardCvv = document.getElementById("cardCvv");
     if (cardCvv) {
       cardCvv.addEventListener("input", (e) => {
-        e.target.value = e.target.value.replace(/\D/g, "");
-      });
-    }
-
-    // Format PIN (numbers only)
-    const cardPin = document.getElementById("cardPin");
-    if (cardPin) {
-      cardPin.addEventListener("input", (e) => {
         e.target.value = e.target.value.replace(/\D/g, "");
       });
     }
@@ -369,7 +375,6 @@ class PaymentSystem {
     const cardHolder = document.getElementById("cardHolder").value.trim();
     const cardExpiry = document.getElementById("cardExpiry").value;
     const cardCvv = document.getElementById("cardCvv").value;
-    const cardPin = document.getElementById("cardPin").value;
 
     // Validate fields
     if (!cardNumber || cardNumber.length < 13) {
@@ -386,10 +391,6 @@ class PaymentSystem {
     }
     if (!cardCvv || cardCvv.length < 3) {
       alert("Please enter a valid CVV");
-      return;
-    }
-    if (!cardPin || cardPin.length < 4) {
-      alert("Please enter your 4-digit PIN");
       return;
     }
 
@@ -481,14 +482,9 @@ class PaymentSystem {
 
   async processBankPayment() {
     const bankName = document.getElementById("bankName").value.trim();
-    const bankReference = document.getElementById("bankReference").value.trim();
 
     if (!bankName) {
       alert("Please enter your full name");
-      return;
-    }
-    if (!bankReference) {
-      alert("Please enter your transaction reference number");
       return;
     }
 
@@ -503,7 +499,6 @@ class PaymentSystem {
     // Save order to localStorage with customer info
     const orderId = this.saveOrder("Bank Transfer", {
       name: bankName,
-      reference: bankReference,
     });
 
     // Close modal and show success

@@ -98,73 +98,113 @@
       </ul>
     </nav>
 
-    <main class="wrapper">
-      <h2>View your orders and delivery details below:</h2>
+    <main class="orders-container">
+      <h1 class="page-heading">View your orders and delivery details below:</h1>
 
       <!-- ORDER CARD -->
-      <section class="order-card">
+      <div class="order-card-wrapper">
         <!-- ORDER HEADER -->
-        <div class="order-header box">
-          <div>
-            <strong>ORD3342293210732</strong>
-            <p class="date">November 10, 2023 at 12:08 PM</p>
+        <div class="order-header-section">
+          <div class="order-info">
+            <h2 class="order-number">ORD8342293210732</h2>
+            <p class="order-timestamp">November 10, 2025 at 12:00 PM</p>
           </div>
-          <span class="status">Pending</span>
+          <span class="status-pill">Pending</span>
         </div>
 
-        <!-- CUSTOMER INFO -->
-        <div class="box">
-          <h3>Customer & Delivery Information</h3>
-          <p><strong>Name:</strong> Ani Victor</p>
-          <p><strong>Phone:</strong> 0802 401 8853</p>
-          <p><strong>Address:</strong> New Haven, Enugu Road</p>
-          <p><strong>City:</strong> Enugu</p>
-          <p><strong>State:</strong> Enugu State</p>
-        </div>
-
-        <!-- ORDER ITEMS -->
-        <div class="box">
-          <h3>Order Items</h3>
-
-          <div class="item">
-            <span>Maize</span>
-            <span>₦120,000</span>
-          </div>
-
-          <div class="item">
-            <span>Rice</span>
-            <span>₦180,000</span>
-          </div>
-
-          <div class="item">
-            <span>Yam</span>
-            <span>₦105,000</span>
+        <!-- CUSTOMER INFO SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">👤 Customer & Delivery Information</h3>
+          <div class="info-box">
+            <p class="info-line">
+              <span class="label">Full Name:</span> Johnny English
+            </p>
+            <p class="info-line">
+              <span class="label">Contact:</span> +2348-024-0991
+            </p>
+            <p class="info-line">
+              <span class="label">Location:</span> New Haven, Bisala road.
+            </p>
+            <p class="info-line"><span class="label">City:</span> Enugu.</p>
+            <p class="info-line">
+              <span class="label">State:</span> Enugu state.
+            </p>
           </div>
         </div>
 
-        <!-- PAYMENT -->
-        <div class="box">
-          <h3>Payment Method</h3>
-          <p>Pay on Delivery</p>
-        </div>
-
-        <!-- SUMMARY -->
-        <div class="box">
-          <h3>Order Summary</h3>
-          <div class="summary">
-            <div>
-              <p>Subtotal</p>
-              <p>Delivery</p>
-              <strong>Total</strong>
+        <!-- ORDER ITEMS SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">🛒 Order Items</h3>
+          <div class="items-container">
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🌽</span>
+                <div class="item-info">
+                  <p class="item-title">Maize</p>
+                  <p class="item-desc">6 × ₦85,000/bag</p>
+                </div>
+              </div>
+              <p class="item-total">₦270,000</p>
             </div>
-            <div class="amount">
-              <p>₦405,000</p>
-              <p>₦12,000</p>
-              <strong>₦417,000</strong>
+
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🍚</span>
+                <div class="item-info">
+                  <p class="item-title">Rice</p>
+                  <p class="item-desc">2 × ₦55,000/bag</p>
+                </div>
+              </div>
+              <p class="item-total">₦110,000</p>
+            </div>
+
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-emoji">🍠</span>
+                <div class="item-info">
+                  <p class="item-title">Yam</p>
+                  <p class="item-desc">14 × ₦3,500/tuber</p>
+                </div>
+              </div>
+              <p class="item-total">₦35,000</p>
             </div>
           </div>
         </div>
-      </section>
+
+        <!-- PAYMENT METHOD SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">💳 Payment Method</h3>
+          <div class="payment-box">
+            <div class="payment-row">
+              <span class="payment-emoji">💰</span>
+              <div class="payment-info">
+                <p class="payment-title">Pay on delivery</p>
+                <p class="payment-subtitle">Select payment option</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY SECTION -->
+        <div class="order-section">
+          <h3 class="section-heading">📊 Order Summary</h3>
+          <div class="summary-box">
+            <div class="summary-line">
+              <span>Sub total:</span>
+              <span>₦415,000</span>
+            </div>
+            <div class="summary-line">
+              <span>Delivery fee:</span>
+              <span>₦2,000</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-line summary-final">
+              <span class="total-label">Total:</span>
+              <span class="total-value">₦417,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <script>
