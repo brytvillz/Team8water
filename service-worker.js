@@ -1,7 +1,7 @@
 // Service Worker for Crop8Hub
 // Caches images and assets for faster loading
 
-const CACHE_NAME = "crop8hub-v1";
+const CACHE_NAME = "crop8hub-v2-enugu";
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",
