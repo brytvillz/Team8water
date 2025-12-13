@@ -75,7 +75,7 @@ def compress_image(input_path, output_path=None, max_width=MAX_WIDTH, max_height
             # Save with optimization
             img.save(
                 output_path,
-                'JPEG',
+                'JPEG', 
                 quality=quality,
                 optimize=True,
                 progressive=True  # Progressive JPEGs load faster
