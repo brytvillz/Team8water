@@ -608,6 +608,144 @@ body {
     display: none !important;
   }
 
+  .mobile-nav-links {
+    background-color: #ffffff;
+    border-radius: 12px;
+    list-style: none;
+    gap: 1.5rem;
+    padding: 1rem;
+    transform: translatex(-1rem);
+    animation: fadein 0.8s ease forwards;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-nav-links li {
+    list-style: none;
+  }
+
+  .mobile-nav-links li a {
+    text-decoration: none;
+    outline: none;
+    display: block;
+    width: 100%;
+    color: #000;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .mobile-nav-links li a:hover {
+    background-color: #f5f7ed;
+    color: #667e06;
+    padding-left: 1.5rem;
+    transform: translateX(5px);
+  }
+
+  .mobile-nav-links li a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 60%;
+    background-color: #667e06;
+    border-radius: 0 4px 4px 0;
+    transition: width 0.3s ease;
+  }
+
+  .mobile-nav-links li a:hover::before {
+    width: 4px;
+  }
+
+  .mobile-nav-links li a:active {
+    transform: translateX(3px) scale(0.98);
+  }
+
+  .mobile-nav-links .user-name,
+  .mobile-nav-links .btn-auth {
+    display: flex;
+  }
+
+  .mobile-nav-links .btn-auth {
+    margin-top: 1rem;
+    justify-content: center;
+    padding: 0.65rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .mobile-nav-links .btn-auth:hover {
+    background: #667e06;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
+  }
+
+  .mobile-nav-links .user-name {
+    border-bottom: 0.18px solid #2a2a2a;
+    padding-bottom: 0.3rem;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 1rem;
+    display: none;
+    justify-content: space-between;
+  }
+
+  .mobile-nav-links #hideNav,
+  .mobile-nav-links #hideNavLoggedOut,
+  .mobile-nav-links #hideNavLoggedIn {
+    position: absolute;
+    width: fit-content;
+    padding: 0;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .mobile-nav-links #hideNav img,
+  .mobile-nav-links #hideNavLoggedOut img,
+  .mobile-nav-links #hideNavLoggedIn img {
+    display: block;
+  }
+
+  .mobile-auth {
+    display: flex;
+    width: fit-content;
+    margin-top: 1rem;
+  }
+
+  .mobile-auth #logoutBtn,
+  .mobile-auth #mobileLogoutBtn {
+    display: none;
+    background: #556905;
+    color: #ffffff;
+    padding: 0.65rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobile-auth #logoutBtn:hover,
+  .mobile-auth #mobileLogoutBtn:hover {
+    background: #667e06;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
+  }
+
+  .mobile-auth #logoutBtn:active,
+  .mobile-auth #mobileLogoutBtn:active {
+    transform: translateY(0) scale(0.98);
+  }
+
   /* Orders page mobile styles */
   .orders-container {
     margin: 20px auto 40px;
