@@ -7,12 +7,13 @@
 
 body {
   background: #f5f6f3;
+  padding-top: 80px; /* Space for fixed navbar */
 }
 
 /* Navigation */
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: 0;
   z-index: 900;

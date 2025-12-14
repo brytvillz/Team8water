@@ -25,6 +25,7 @@ body {
   width: 100%;
   height: 88vh;
   overflow: hidden;
+  margin-top: 70px; /* Space for fixed navbar - matches navbar height */
 }
 
 .slide-container {
@@ -119,6 +120,11 @@ body {
   margin: 0;
   animation: bounce 2s ease-in-out infinite;
   cursor: pointer;
+}
+
+/* First h2 in each slide (text before colon) - larger size */
+.slide-content h2:first-of-type {
+  font-size: 4rem;
 }
 
 /* Second h2 in each slide - same size and no bounce */
@@ -289,7 +295,7 @@ body {
 /* Navigation */
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: 0;
   z-index: 900;
@@ -1700,34 +1706,68 @@ section:nth-child(4) {
 
 /* MEDIA QUERIES */
 
-@media (max-width: 800px) {
+@media (max-width: 950px) {
+  /* Mobile Hero Section - 950px down to 375px */
   .image-slider {
-    height: 90vh;
+    height: 91vh;
   }
 
-  .slide-container {
-    max-width: 100%;
+  .slide {
+    background-color: #0000009f;
+    background-blend-mode: overlay;
+  }
+
+  #slide1 {
+    background-image: url(images/mobilehero\ image1.svg);
+  }
+
+  #slide2 {
+    background-image: url(images/mobilehero\ image2.svg);
+  }
+
+  #slide3 {
+    background-image: url(images/mobilehero\ image3.svg);
+  }
+
+  #slide4 {
+    background-image: url(images/mobilehero\ image4.svg);
   }
 
   .slide-content {
-    width: 85%;
+    width: 90%;
+    gap: 1rem;
+    position: absolute;
+    z-index: 2;
+    color: white;
+  }
+
+  /* Mobile optimized text sizes */
+  .slide-content h2:first-of-type {
+    font-size: 2rem;
   }
 
   .slide-content h2 {
-    font-size: 2rem;
+    font-size: 1rem;
+    line-height: 1.3;
+    margin: 0;
   }
 
   .slide-content #slide4-text {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .slide-content h2 span {
-    font-size: 2rem;
+    font-size: 1rem;
+    color: #af6f28;
   }
 
   .slide-content p {
-    width: 80%;
-    font-size: 0.95rem;
+    width: 85%;
+    margin: 0;
+    color: #ffffff;
+    font-size: 0.9rem;
   }
 
   .shop-now-btn-fixed {
@@ -1736,13 +1776,37 @@ section:nth-child(4) {
   }
 
   .shop-now-btn-fixed button {
-    padding: 1.2rem 3rem;
-    font-size: 1.4rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
+  }
+
+  .slide-content button {
+    padding: 0.7rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    border-radius: 20px;
   }
 
   .slider-btn {
-    font-size: 1.5rem;
-    padding: 0.4rem 0.8rem;
+    display: none;
+  }
+
+  .slider-dots {
+    bottom: 15px;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+  }
+
+  /* Hide search bar on mobile */
+  .nav-search {
+    display: none !important;
   }
 
   .crop-section,
@@ -1756,18 +1820,18 @@ section:nth-child(4) {
   }
 
   .navbar .container {
-    padding: 0.5rem 2.5rem;
+    padding: 0.5rem 2rem;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    margin-right: auto;
   }
 
   .nav-links,
   #navLinksLoggedOut,
   #navLinksLoggedIn {
     display: none !important;
-  }
-
-  .nav-search {
-    display: flex;
-    width: 50%;
   }
 
   .btn-auth {
@@ -1786,6 +1850,11 @@ section:nth-child(4) {
 
   .mobile-toggle {
     display: flex;
+    margin-left: auto;
+  }
+
+  .nav-auth {
+    margin-left: 0;
   }
 
   .mobile-toggle .mobile-user-display {
@@ -2007,24 +2076,55 @@ section:nth-child(4) {
     align-self: center;
   }
 
+  /* Footer Responsive - Tablet/Mobile */
+  footer section {
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  footer section .footer-logo {
+    width: 100%;
+    max-width: 250px;
+  }
+
   .footer-logo p {
-    font-size: 0.6rem;
+    font-size: 0.85rem;
   }
 
   footer h5 {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+
+  footer nav {
+    min-width: 150px;
   }
 
   .footer-navbar li a {
-    font-size: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .footer-contact {
+    width: 100%;
+    max-width: 300px;
   }
 
   .footer-contact p {
-    font-size: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-socials {
+    width: 100%;
+    text-align: center;
   }
 
   .footer-socials a {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    margin: 0 0.4rem;
+  }
+
+  .footer-credit {
+    font-size: 0.85rem;
   }
 
   .signUp-card {
@@ -2034,113 +2134,20 @@ section:nth-child(4) {
 }
 
 @media (max-width: 500px) {
-  .image-slider {
-    height: 91vh;
-  }
-
-  .slide {
-    background-color: #0000009f;
-    background-blend-mode: overlay;
-  }
-
-  #slide1 {
-    background-image: url(images/mobilehero\ image1.svg);
-  }
-
-  #slide2 {
-    background-image: url(images/mobilehero\ image2.svg);
-  }
-
-  #slide3 {
-    background-image: url(images/mobilehero\ image3.svg);
-  }
-
-  #slide4 {
-    background-image: url(images/mobilehero\ image4.svg);
-  }
-
-  .slide-content {
-    width: 88%;
-    gap: 1rem;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .slide-content h2 {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-    padding: 0rem;
-    background-color: transparent;
-  }
-
-  .slide-content #slide4-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: block;
-  }
-
-  .slide-content h2 span {
-    font-size: 1.5rem;
-    margin-bottom: 0.3rem;
-    font-weight: 700;
-    display: inline;
-  }
-
-  .slide-content p {
-    width: 100%;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  .shop-now-btn-fixed {
-    bottom: 3rem;
-    left: 4rem;
-  }
-
-  .shop-now-btn-fixed button {
-    padding: 1rem 2.5rem;
-    font-size: 1.2rem;
-    border-radius: 40px;
-  }
-
-  .slide-content button {
-    padding: 0.7rem 2.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    align-self: flex-start;
-    margin-top: 0.5rem;
-    border-radius: 20px;
-  }
-
-  .slider-btn {
-    display: none;
-    font-size: 1.3rem;
-    padding: 0.4rem 0.7rem;
-    top: 45%;
-  }
-
-  .slider-dots {
-    bottom: 15px;
-    gap: 8px;
-  }
-
-  .dot {
-    width: 11px;
-    height: 11px;
-  }
-
   .nav-brand {
     width: 35%;
   }
 
-  .nav-search {
-    width: 45%;
-    padding: 0 0.2rem;
-    display: flex;
+  /* Further reduce Shop Now button size on smaller screens */
+  .shop-now-btn-fixed {
+    bottom: 2.5rem;
+    left: 2.5rem;
+  }
+
+  .shop-now-btn-fixed button {
+    padding: 0.7rem 1.8rem;
+    font-size: 0.95rem;
+    border-radius: 30px;
   }
 
   .section-title {
@@ -2335,16 +2342,42 @@ section:nth-child(4) {
     align-self: center;
   }
 
+  /* Footer Mobile Styles */
+  footer section {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  footer section .footer-logo {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .footer-logo img {
+    width: 80%;
+  }
+
   .footer-logo p {
     font-size: 0.9rem;
   }
 
   footer h5 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  footer nav {
+    width: 100%;
+  }
+
+  .footer-navbar {
+    gap: 0.6rem;
   }
 
   .footer-navbar li a {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .footer-contact {
@@ -2352,7 +2385,23 @@ section:nth-child(4) {
   }
 
   .footer-contact p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    justify-content: center;
+  }
+
+  .footer-socials {
+    width: 100%;
+  }
+
+  .footer-socials a {
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+  }
+
+  .footer-credit {
+    font-size: 0.85rem;
+    padding: 1.5rem 0;
   }
 
   .modal-container {
@@ -2723,6 +2772,36 @@ section:nth-child(4) {
   .about-farm div p {
     font-size: 0.8rem;
   }
+
+  /* Footer Small Mobile */
+  footer section .footer-logo {
+    max-width: 180px;
+  }
+
+  .footer-logo p {
+    font-size: 0.8rem;
+  }
+
+  footer h5 {
+    font-size: 1rem;
+  }
+
+  .footer-navbar li a {
+    font-size: 0.85rem;
+  }
+
+  .footer-contact p {
+    font-size: 0.85rem;
+  }
+
+  .footer-socials a {
+    font-size: 1.3rem;
+  }
+
+  .footer-credit {
+    font-size: 0.75rem;
+    padding: 1.2rem 0;
+  }
 }
 
 /* Extra small devices */
@@ -2782,5 +2861,40 @@ section:nth-child(4) {
 
   .about-farm div {
     padding: 0.5rem;
+  }
+
+  /* Footer Extra Small */
+  footer section .footer-logo {
+    max-width: 150px;
+  }
+
+  .footer-logo img {
+    width: 90%;
+  }
+
+  .footer-logo p {
+    font-size: 0.7rem;
+  }
+
+  footer h5 {
+    font-size: 0.9rem;
+  }
+
+  .footer-navbar li a {
+    font-size: 0.75rem;
+  }
+
+  .footer-contact p {
+    font-size: 0.75rem;
+  }
+
+  .footer-socials a {
+    font-size: 1.2rem;
+    margin: 0 0.3rem;
+  }
+
+  .footer-credit {
+    font-size: 0.7rem;
+    padding: 1rem 0;
   }
 }

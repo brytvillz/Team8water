@@ -28,6 +28,7 @@ body {
   min-height: 100vh;
   color: var(--text-primary);
   padding: 0;
+  padding-top: 20px; /* Space for potential navbar or notices */
 }
 
 .container {
@@ -1094,15 +1095,18 @@ body {
   .checkout-grid {
     grid-template-columns: 1fr;
     gap: 24px;
+    display: flex;
+    flex-direction: column;
   }
 
   .right-column {
     position: static;
-    /* Order summary appears after left column on mobile */
+    /* Order summary appears at the top on mobile */
+    order: -1;
   }
 
   .left-column {
-    order: -1;
+    order: 1;
   }
 }
 
