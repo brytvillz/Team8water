@@ -321,7 +321,7 @@ body {
 
 .nav-brand {
   width: 8%;
-  min-width: 100px;
+  min-width: 140px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -931,7 +931,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  background-color: #f9f9f9;
+  background-color: #e8f5e9;
 }
 
 .survey-left h2 {
@@ -2588,7 +2588,7 @@ section:nth-child(4) {
   }
 
   .nav-brand img {
-    width: 120px;
+    width: 180px;
   }
 
   /* About Us */
@@ -2647,7 +2647,7 @@ section:nth-child(4) {
   }
 
   .nav-brand img {
-    width: 100px;
+    width: 160px;
   }
 
   .btn-auth {
@@ -2738,7 +2738,7 @@ section:nth-child(4) {
   }
 
   .nav-brand img {
-    width: 90px;
+    width: 150px;
   }
 
   .btn-auth {
@@ -2840,7 +2840,7 @@ section:nth-child(4) {
   }
 
   .nav-brand img {
-    width: 80px;
+    width: 140px;
   }
 
   .btn-auth {

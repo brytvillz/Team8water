@@ -509,44 +509,6 @@ body {
     animation: fadein 0.8s ease forwards;
     position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    right: 1rem;
-    width: 300px;
-    top: 5rem;
-    z-index: 800;
-  }
-
-  .mobile-nav-links[style*="display: block"] {
-    display: flex !important;
-  }
-
-  .mobile-nav-links a:first-child {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    z-index: 10;
-  }
-
-  .mobile-nav-links a:first-child img {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.3s ease;
-  }
-
-  .mobile-nav-links a:first-child:hover img {
-    transform: rotate(90deg);
-  }
-
-  .mobile-nav-links .user-name {
-    display: block;
-    color: #667e06;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
   }
 
   .mobile-nav-links li {
@@ -596,16 +558,83 @@ body {
     transform: translateX(3px) scale(0.98);
   }
 
-  .mobile-nav-links .mobile-auth {
-    margin-top: 1rem;
+  .mobile-nav-links .user-name,
+  .mobile-nav-links .btn-auth {
+    display: flex;
   }
 
-  .mobile-nav-links .mobile-auth .btn-auth {
-    display: flex;
+  .mobile-nav-links .btn-auth {
+    margin-top: 1rem;
     justify-content: center;
     padding: 0.65rem 1.5rem;
     font-size: 0.9rem;
-    width: 100%;
+  }
+
+  .mobile-nav-links .btn-auth:hover {
+    background: #667e06;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
+  }
+
+  .mobile-nav-links .user-name {
+    border-bottom: 0.18px solid #2a2a2a;
+    padding-bottom: 0.3rem;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 1rem;
+    display: none;
+    justify-content: space-between;
+  }
+
+  .mobile-nav-links #hideNav,
+  .mobile-nav-links #hideNavLoggedOut,
+  .mobile-nav-links #hideNavLoggedIn {
+    position: absolute;
+    width: fit-content;
+    padding: 0;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .mobile-nav-links #hideNav img,
+  .mobile-nav-links #hideNavLoggedOut img,
+  .mobile-nav-links #hideNavLoggedIn img {
+    display: block;
+  }
+
+  .mobile-auth {
+    display: flex;
+    width: fit-content;
+    margin-top: 1rem;
+  }
+
+  .mobile-auth #logoutBtn,
+  .mobile-auth #mobileLogoutBtn {
+    display: none;
+    background: #556905;
+    color: #ffffff;
+    padding: 0.65rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobile-auth #logoutBtn:hover,
+  .mobile-auth #mobileLogoutBtn:hover {
+    background: #667e06;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
+  }
+
+  .mobile-auth #logoutBtn:active,
+  .mobile-auth #mobileLogoutBtn:active {
+    transform: translateY(0) scale(0.98);
   }
 
   .profile-nav-links {
@@ -690,76 +719,6 @@ body {
 
   .navbar .container {
     padding: 0.5rem 1.5rem;
-  }
-
-  .mobile-nav-links {
-    width: 280px;
-    right: 0.5rem;
-  }
-
-  .mobile-nav-links .btn-auth:hover {
-    background: #667e06;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
-  }
-
-  .mobile-nav-links .user-name {
-    border-bottom: 0.18px solid #2a2a2a;
-    padding-bottom: 0.3rem;
-    font-weight: bold;
-    font-size: 12px;
-    margin-bottom: 1rem;
-    display: none;
-    justify-content: space-between;
-  }
-
-  .mobile-nav-links #hideNav,
-  .mobile-nav-links #hideNavLoggedOut,
-  .mobile-nav-links #hideNavLoggedIn {
-    position: absolute;
-    width: fit-content;
-    padding: 0;
-    top: 15px;
-    right: 15px;
-  }
-
-  .mobile-nav-links #hideNav img,
-  .mobile-nav-links #hideNavLoggedOut img,
-  .mobile-nav-links #hideNavLoggedIn img {
-    display: block;
-  }
-
-  .mobile-auth {
-    display: flex;
-    width: fit-content;
-    margin-top: 1rem;
-  }
-
-  .mobile-auth #logoutBtn,
-  .mobile-auth #mobileLogoutBtn {
-    display: none;
-    background: #556905;
-    color: #ffffff;
-    padding: 0.65rem 1.5rem;
-    border-radius: 12px;
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .mobile-auth #logoutBtn:hover,
-  .mobile-auth #mobileLogoutBtn:hover {
-    background: #667e06;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 16px rgba(85, 105, 5, 0.5);
-  }
-
-  .mobile-auth #logoutBtn:active,
-  .mobile-auth #mobileLogoutBtn:active {
-    transform: translateY(0) scale(0.98);
   }
 }
 
