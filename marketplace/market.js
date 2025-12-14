@@ -2,6 +2,7 @@
 const hideNavLoggedOut = document.getElementById("hideNavLoggedOut");
 const hideNavLoggedIn = document.getElementById("hideNavLoggedIn");
 const showNav = document.getElementById("showNav");
+const mobileToggle = document.getElementById("mobileToggle");
 const mobileNavLoggedOut = document.getElementById("mobileNavLoggedOut");
 const mobileNavLoggedIn = document.getElementById("mobileNavLoggedIn");
 const navLinksLoggedOut = document.getElementById("navLinksLoggedOut");
@@ -32,6 +33,11 @@ if (showNav) {
       mobileNavLoggedOut.style.display = "block";
       mobileNavLoggedIn.style.display = "none";
     }
+
+    // Hide the hamburger toggle when menu is open
+    if (mobileToggle) {
+      mobileToggle.style.display = "none";
+    }
   });
 }
 
@@ -39,6 +45,11 @@ if (hideNavLoggedOut) {
   hideNavLoggedOut.addEventListener("click", (e) => {
     e.preventDefault();
     mobileNavLoggedOut.style.display = "none";
+
+    // Show the hamburger toggle when menu is closed
+    if (mobileToggle) {
+      mobileToggle.style.display = "flex";
+    }
   });
 }
 
@@ -46,6 +57,11 @@ if (hideNavLoggedIn) {
   hideNavLoggedIn.addEventListener("click", (e) => {
     e.preventDefault();
     mobileNavLoggedIn.style.display = "none";
+
+    // Show the hamburger toggle when menu is closed
+    if (mobileToggle) {
+      mobileToggle.style.display = "flex";
+    }
   });
 }
 
