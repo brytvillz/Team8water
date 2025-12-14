@@ -362,6 +362,11 @@ body {
   color: #1a1a1a;
 }
 
+.info-line .label {
+  font-weight: 600;
+  color: #6b7c2e;
+}
+
 /* ITEMS CONTAINER */
 .items-container {
   background: #f4f6ed;
@@ -478,6 +483,12 @@ body {
 
 .payment-box:hover .payment-title {
   color: #6b7c2e;
+}
+
+.payment-subtitle {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
 }
 
 /* SUMMARY BOX */

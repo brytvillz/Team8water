@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function displayOrders() {
-  const wrapper = document.querySelector(".wrapper");
+  const wrapper = document.querySelector(".orders-container");
 
   if (!wrapper) return;
 
@@ -134,12 +134,13 @@ function displayOrders() {
   const ordersData = JSON.parse(localStorage.getItem("userOrders") || "[]");
 
   // Clear existing content except the header
-  const header = wrapper.querySelector("h2");
+  const header = wrapper.querySelector("h1.page-heading");
   wrapper.innerHTML = "";
   if (header) {
     wrapper.appendChild(header);
   } else {
-    const newHeader = document.createElement("h2");
+    const newHeader = document.createElement("h1");
+    newHeader.className = "page-heading";
     newHeader.textContent = "View your orders and delivery details below:";
     wrapper.appendChild(newHeader);
   }
@@ -169,8 +170,9 @@ function displayOrders() {
 }
 
 function createOrderCard(order) {
-  const orderCard = document.createElement("section");
-  orderCard.className = "order-card";
+  const orderCard = document.createElement("div");
+  orderCard.className = "order-card-wrapper";
+  orderCard.style.marginBottom = "24px";
 
   // Format date
   const orderDate = new Date(order.timestamp);
@@ -182,84 +184,135 @@ function createOrderCard(order) {
     minute: "2-digit",
   });
 
+  // Get crop emoji based on item name
+  const getCropEmoji = (name) => {
+    const emojiMap = {
+      maize: "🌽",
+      rice: "🍚",
+      yam: "🍠",
+      cassava: "🥔",
+      beans: "🫘",
+      soybean: "🫛",
+      wheat: "🌾",
+      millet: "🌾",
+      sorghum: "🌾",
+      groundnut: "🥜",
+    };
+    const key = name.toLowerCase();
+    return emojiMap[key] || "🌾";
+  };
+
   // Order Header
   const orderHeader = document.createElement("div");
-  orderHeader.className = "order-header box";
+  orderHeader.className = "order-header-section";
   orderHeader.innerHTML = `
-    <div>
-      <strong>${order.orderId}</strong>
-      <p class="date">${formattedDate}</p>
+    <div class="order-info">
+      <h2 class="order-number">${order.orderId}</h2>
+      <p class="order-timestamp">${formattedDate}</p>
     </div>
-    <span class="status">${order.status || "Pending"}</span>
+    <span class="status-pill">${order.status || "Pending"}</span>
   `;
   orderCard.appendChild(orderHeader);
 
   // Customer Info (if available)
   if (order.customerInfo) {
     const customerInfo = document.createElement("div");
-    customerInfo.className = "box";
+    customerInfo.className = "order-section";
     customerInfo.innerHTML = `
-      <h3>Customer & Delivery Information</h3>
-      <p><strong>Name:</strong> ${order.customerInfo.name || "N/A"}</p>
-      <p><strong>Phone:</strong> ${order.customerInfo.phone || "N/A"}</p>
-      <p><strong>Address:</strong> ${order.customerInfo.address || "N/A"}</p>
-      ${
-        order.customerInfo.city
-          ? `<p><strong>City:</strong> ${order.customerInfo.city}</p>`
-          : ""
-      }
-      ${
-        order.customerInfo.state
-          ? `<p><strong>State:</strong> ${order.customerInfo.state}</p>`
-          : ""
-      }
+      <h3 class="section-heading">👤 Customer & Delivery Information</h3>
+      <div class="info-box">
+        <p class="info-line"><span class="label">Full Name:</span> ${
+          order.customerInfo.name || "N/A"
+        }</p>
+        <p class="info-line"><span class="label">Contact:</span> ${
+          order.customerInfo.phone || "N/A"
+        }</p>
+        <p class="info-line"><span class="label">Location:</span> ${
+          order.customerInfo.address || "N/A"
+        }</p>
+        ${
+          order.customerInfo.city
+            ? `<p class="info-line"><span class="label">City:</span> ${order.customerInfo.city}</p>`
+            : ""
+        }
+        ${
+          order.customerInfo.state
+            ? `<p class="info-line"><span class="label">State:</span> ${order.customerInfo.state}</p>`
+            : ""
+        }
+      </div>
     `;
     orderCard.appendChild(customerInfo);
   }
 
   // Order Items
   const orderItems = document.createElement("div");
-  orderItems.className = "box";
-  orderItems.innerHTML = `<h3>Order Items</h3>`;
+  orderItems.className = "order-section";
+  orderItems.innerHTML = `<h3 class="section-heading">🛒 Order Items</h3>`;
+
+  const itemsContainer = document.createElement("div");
+  itemsContainer.className = "items-container";
 
   order.items.forEach((item) => {
     const itemDiv = document.createElement("div");
-    itemDiv.className = "item";
+    itemDiv.className = "item-row";
     itemDiv.innerHTML = `
-      <span>${item.name} (x${item.quantity})</span>
-      <span>₦${item.total.toLocaleString()}</span>
+      <div class="item-left">
+        <span class="item-emoji">${getCropEmoji(item.name)}</span>
+        <div class="item-info">
+          <p class="item-title">${item.name}</p>
+          <p class="item-desc">${item.quantity} × ₦${(
+      item.total / item.quantity
+    ).toLocaleString()}/unit</p>
+        </div>
+      </div>
+      <p class="item-total">₦${item.total.toLocaleString()}</p>
     `;
-    orderItems.appendChild(itemDiv);
+    itemsContainer.appendChild(itemDiv);
   });
 
+  orderItems.appendChild(itemsContainer);
   orderCard.appendChild(orderItems);
 
   // Payment Method
   const paymentMethod = document.createElement("div");
-  paymentMethod.className = "box";
+  paymentMethod.className = "order-section";
   paymentMethod.innerHTML = `
-    <h3>Payment Method</h3>
-    <p>${order.paymentMethod || "N/A"}</p>
+    <h3 class="section-heading">💳 Payment Method</h3>
+    <div class="payment-box">
+      <div class="payment-row">
+        <span class="payment-emoji">💰</span>
+        <div class="payment-info">
+          <p class="payment-title">${
+            order.paymentMethod || "Pay on delivery"
+          }</p>
+          <p class="payment-subtitle">Select payment option</p>
+        </div>
+      </div>
+    </div>
   `;
   orderCard.appendChild(paymentMethod);
 
   // Order Summary
   const summary = document.createElement("div");
-  summary.className = "box";
+  summary.className = "order-section";
   summary.innerHTML = `
-    <h3>Order Summary</h3>
-    <div class="summary">
-      <div>
-        <p>Subtotal</p>
-        <p>Delivery</p>
-        <strong>Total</strong>
+    <h3 class="section-heading">📊 Order Summary</h3>
+    <div class="summary-box">
+      <div class="summary-line">
+        <span>Sub total:</span>
+        <span>₦${order.subtotal.toLocaleString()}</span>
       </div>
-      <div class="amount">
-        <p>₦${order.subtotal.toLocaleString()}</p>
-        <p>₦${order.deliveryFee.toLocaleString()}</p>
-        <strong>₦${(
+      <div class="summary-line">
+        <span>Delivery fee:</span>
+        <span>₦${order.deliveryFee.toLocaleString()}</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-line summary-final">
+        <span class="total-label">Total:</span>
+        <span class="total-value">₦${(
           order.subtotal + order.deliveryFee
-        ).toLocaleString()}</strong>
+        ).toLocaleString()}</span>
       </div>
     </div>
   `;
