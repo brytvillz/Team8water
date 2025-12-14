@@ -1252,6 +1252,65 @@ body {
   }
 }
 
+/* Single column layout for small mobile screens - 375px to 450px */
+@media (max-width: 450px) {
+  #forthPartMid {
+    grid-template-columns: 1fr; /* Single column layout */
+    width: 95%;
+    padding: 15px;
+    gap: 50px;
+  }
+
+  .product-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 25px auto;
+  }
+
+  .product-card img {
+    height: 160px;
+  }
+
+  .product-title {
+    flex-direction: row;
+    padding: 8px;
+  }
+
+  .product-title h3 {
+    font-size: 15px;
+  }
+
+  .selection-controls {
+    padding: 0 8px;
+  }
+
+  .quantity-input-wrapper {
+    width: 80px;
+    height: 30px;
+  }
+
+  #quantity {
+    width: 80px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .description,
+  .price {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .description p {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 15px;
+  }
+}
+
 /* Navigation Mobile Styles - Only apply at 768px and below */
 @media (max-width: 768px) {
   .navbar .container {
@@ -1427,5 +1486,46 @@ body {
   .mobile-auth #logoutBtn:active,
   .mobile-auth #mobileLogoutBtn:active {
     transform: translateY(0) scale(0.98);
+  }
+}
+
+/* Extra small screens - Adjust navbar elements for 375px to 407px */
+@media (max-width: 407px) {
+  .navbar .container {
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .nav-brand {
+    width: 25%;
+    min-width: 70px;
+  }
+
+  .nav-search {
+    width: 40%;
+    min-width: 120px;
+    padding: 0 1px;
+  }
+
+  .nav-search-input {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+  }
+
+  .nav-search-input::placeholder {
+    font-size: 0.75rem;
+  }
+
+  .nav-search-btn {
+    width: 1rem;
+    margin: 0 3px;
+  }
+
+  .mobile-toggle {
+    margin-left: auto;
+  }
+
+  .mobile-toggle a {
+    font-size: 1.1rem;
   }
 }

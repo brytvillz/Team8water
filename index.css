@@ -58,7 +58,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.35);
   z-index: 1;
 }
 
@@ -193,7 +193,7 @@ body {
 /* Fixed Large Shop Now Button */
 .shop-now-btn-fixed {
   position: fixed;
-  bottom: 6rem;
+  bottom: 3rem;
   left: 8rem;
   z-index: 1000;
   text-decoration: none;
@@ -530,7 +530,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.25);
   z-index: 0;
 }
 
@@ -1714,7 +1714,7 @@ section:nth-child(4) {
   }
 
   .slide {
-    background-color: #0000009f;
+    background-color: #00000050;
     background-blend-mode: overlay;
   }
 
@@ -1998,9 +1998,15 @@ section:nth-child(4) {
   }
 
   .crop-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 0 1rem;
+    max-width: 400px;
+  }
+
+  .crop-card {
+    justify-self: center;
+    width: 100%;
   }
 
   .category-btn {
@@ -2281,19 +2287,21 @@ section:nth-child(4) {
   }
 
   .crop-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0 0.5rem;
     width: 100%;
+    max-width: 380px;
   }
 
   .crop-card {
     padding-bottom: 0.8rem;
+    justify-self: center;
+    width: 100%;
   }
 
   .crop-card h3 {
     margin-top: 1rem;
-    font-size: 1rem;
   }
 
   .crop-card p {
