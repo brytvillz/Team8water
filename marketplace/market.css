@@ -667,13 +667,15 @@ body {
 }
 
 .product-card {
-  width: 384px;
-  height: 400px;
+  width: 100%;
+  max-width: 360px;
+  height: 380px;
   border-top-right-radius: 10px;
   padding-right: 4px;
-  margin-bottom: 25px;
+  margin: 0 auto 25px auto;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .product-card:hover {
@@ -683,10 +685,11 @@ body {
 
 .product-card img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   display: block;
+  object-fit: cover;
   transition: all 0.3s ease;
 }
 
@@ -859,41 +862,71 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE DESIGN - TABLET
+   RESPONSIVE DESIGN - LARGE DESKTOP TO TABLET
    ============================================ */
-@media (max-width: 1024px) {
-  #topPart {
-    padding-left: 40px;
-    padding-right: 20px;
+
+/* Large screens - adjust max widths */
+@media (max-width: 1400px) {
+  #forthPartMid {
+    max-width: 1100px;
+    gap: 18px;
   }
 
-  #topPartLeft h3 {
-    margin: 0 40px 0 30px;
-    font-size: 18px;
+  .product-card {
+    width: 350px;
   }
 
-  #topPartRight {
-    gap: 20px;
-    padding-right: 40px;
-  }
-
-  #topPartRight .nav-link {
-    font-size: 15px;
-    padding: 7px 16px;
+  #forthPartTop {
+    max-width: 1100px;
   }
 }
 
-@media (max-width: 768px) {
-  #topPart {
-    flex-direction: column;
-    height: auto;
-    padding: 20px;
-    gap: 15px;
+@media (max-width: 1200px) {
+  #forthPartMid {
+    max-width: 95%;
+    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  #topPartLeft {
+  .product-card {
     width: 100%;
-    justify-content: space-between;
+    max-width: 320px;
+  }
+
+  #forthPartTop {
+    max-width: 95%;
+    padding: 0 20px;
+  }
+
+  #forthPartTopRight button {
+    width: 250px;
+    height: 45px;
+    font-size: 18px;
+    margin: 20px;
+  }
+
+  #secondPart h1 {
+    padding-left: 40px;
+  }
+
+  #secondPartCategories {
+    width: 95%;
+  }
+
+  #showCrops {
+    padding-left: 20px;
+    padding-right: 40px;
+  }
+
+  #secondPartRight {
+    padding-right: 20px;
+  }
+}
+
+/* Tablet landscape - maintain desktop navbar and 3-column cards */
+@media (max-width: 1024px) {
+  #topPart {
+    padding: 20px;
   }
 
   #topPartLeft h3 {
@@ -902,32 +935,64 @@ body {
   }
 
   #topPartRight {
-    width: 100%;
-    justify-content: center;
-    padding-right: 0;
     gap: 15px;
-    flex-wrap: wrap;
+    padding-right: 20px;
   }
 
   #topPartRight .nav-link {
-    font-size: 14px;
-    padding: 8px 18px;
+    font-size: 15px;
+    padding: 7px 16px;
   }
 
-  /* Payment section responsive */
-  #forthPartTop {
-    width: 95%;
-    height: auto;
-    min-height: 100px;
+  #forthPartMid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 95%;
+    gap: 12px;
+  }
+
+  .product-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  #secondPart h1 {
+    padding-left: 30px;
+    font-size: 1.8rem;
+  }
+
+  #secondPartCategories {
+    padding: 15px;
     flex-direction: column;
-    padding: 20px;
     gap: 15px;
   }
 
-  #forthPartTopLeft {
+  #secondPartLeft,
+  #secondPartRight {
     width: 100%;
-    align-items: center;
+    justify-content: center;
+  }
+
+  #showCrops {
+    padding: 0;
+  }
+
+  #secondPartRight {
+    padding: 0;
+    flex-wrap: wrap;
+  }
+}
+
+/* Tablet portrait - maintain 3-column cards and desktop navbar */
+@media (max-width: 900px) {
+  #forthPartTop {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
     text-align: center;
+  }
+
+  #forthPartTopLeft {
+    align-items: center;
   }
 
   #forthPartTopRight {
@@ -939,23 +1004,30 @@ body {
   #forthPartTopRight button {
     width: 100%;
     max-width: 350px;
-    margin: 0;
+    margin: 10px 0;
   }
 
-  /* Product grid responsive */
   #forthPartMid {
-    grid-template-columns: repeat(2, 1fr);
-    width: 95%;
-    gap: 15px;
-    padding: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
   .product-card {
     width: 100%;
+    max-width: 280px;
+  }
+
+  #thirdPart {
+    height: 250px;
+  }
+
+  .carousel-track img {
+    width: 500px;
+    height: 220px;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
   /* --- 🍏 Top Bar Adjustments --- */
   #topPart {
     gap: 15px;
@@ -1075,70 +1147,103 @@ body {
   }
 
   #forthPartMid {
-    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-columns: repeat(2, 1fr); /* 2 column layout */
     width: 95%;
     padding: 10px;
-    gap: 20px;
+    gap: 15px;
   }
 
   .product-card {
     width: 100%;
     height: auto;
+    max-height: 320px;
   }
 
   .product-card img {
-    height: 140px;
+    height: 130px;
+    object-fit: cover;
+  }
+
+  .product-info {
+    padding: 8px;
   }
 
   .product-title {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-bottom: 5px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    gap: 5px;
   }
 
   .product-title h3 {
-    margin-bottom: 5px;
+    font-size: 14px;
+    margin: 0;
   }
 
   .selection-controls {
-    flex-direction: column; /* Stack selection controls */
-    align-items: flex-start;
-    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
     width: 100%;
+    padding: 0 5px;
+  }
+
+  .select-area {
+    padding: 5px;
+    margin-left: 0;
+  }
+
+  #selectProduct {
+    width: 20px;
+    height: 18px;
   }
 
   .quantity-area {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
   }
 
   .quantity-input-wrapper {
-    width: 100px;
-    height: 32px;
+    width: 70px;
+    height: 28px;
   }
 
   #quantity {
-    width: 100px;
-    height: 32px;
-    font-size: 14px;
-    padding-left: 8px;
+    width: 70px;
+    height: 28px;
+    font-size: 12px;
+    padding-left: 6px;
   }
 
   .qty-buttons-vertical {
-    width: 30px;
-    height: 32px;
-    padding: 2px;
+    width: 24px;
+    height: 28px;
+    padding: 1px;
   }
 
   .qty-buttons-vertical img {
-    width: 26px;
-    height: 14px;
+    width: 20px;
+    height: 12px;
   }
 
   .description,
   .price {
     width: 100%;
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .description p {
+    margin: 2px 0;
+    font-size: 11px;
+  }
+
+  .price {
+    font-size: 14px;
+    font-weight: 600;
   }
 
   /* ➡️ Fifth Part */
@@ -1147,8 +1252,8 @@ body {
   }
 }
 
-/* Navigation Mobile Styles */
-@media (max-width: 800px) {
+/* Navigation Mobile Styles - Only apply at 768px and below */
+@media (max-width: 768px) {
   .navbar .container {
     padding: 0.5rem 2.5rem;
   }
@@ -1322,21 +1427,5 @@ body {
   .mobile-auth #logoutBtn:active,
   .mobile-auth #mobileLogoutBtn:active {
     transform: translateY(0) scale(0.98);
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .navbar .container {
-    padding: 0.5rem 1.5rem;
-  }
-
-  .nav-brand {
-    width: 35%;
-  }
-
-  .nav-search {
-    width: 45%;
-    padding: 0 0.2rem;
-    display: flex;
   }
 }
